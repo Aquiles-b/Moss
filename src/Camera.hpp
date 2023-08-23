@@ -1,11 +1,12 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP
 #include <raylib.h>
+#include <iostream>
 
 namespace moss{
 class Camera{
     public:
-        Camera(const float& width, const float& height);
+        Camera(const float& width, const float& height, const short& speed);
         virtual ~Camera();
 
         Camera2D& getCam() const;

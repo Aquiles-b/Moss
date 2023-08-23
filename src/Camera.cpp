@@ -1,11 +1,12 @@
 #include "Camera.hpp"
+#include <raylib.h>
 
-moss::Camera::Camera(const float& width,const float& height)
-    : cam{new Camera2D{0}}, speed{10}{
+moss::Camera::Camera(const float& width,const float& height, const short& speed)
+    : cam{new Camera2D{0}}, speed{speed}{
     this->cam->target = (Vector2){width / 2.0f, height / 2.0f};
     this->cam->offset = (Vector2){width / 2.0f, height / 2.0f};
     this->cam->rotation = 0.0f;
-    this->cam->zoom = 1.0f;
+    this->cam->zoom = 0.3f;
 }
 
 moss::Camera::~Camera(){
@@ -21,6 +22,17 @@ void moss::Camera::update(){
         this->cam->target.x -= this->speed;
     if (IsKeyDown(KEY_D))
         this->cam->target.x += this->speed;
+    switch((int)GetMouseWheelMove()){
+        case 1:
+            if (this->cam->zoom <= 1.0f)
+                this->cam->zoom += 0.025f;
+            break;
+        case -1:
+            if (this->cam->zoom >= 0.12f)
+                this->cam->zoom -= 0.025f;
+        default:
+            break;
+    }
 }
 
 Camera2D& moss::Camera::getCam() const{
