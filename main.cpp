@@ -1,17 +1,26 @@
 #include <raylib.h>
+#include "src/Camera.hpp"
+#include "src/Mapa.hpp"
 
 int main(void)
 {
-    InitWindow(1280, 720, "Moss");
+    const float width = 1280.0f;
+    const float height = 720.0f;
+    InitWindow(width, height, "Moss");
     SetTargetFPS(60);
 
-    while (!WindowShouldClose()){
-        BeginDrawing();
-            ClearBackground(BLACK);
-            DrawText("teeeeeeeeeeeste", 190, 200, 40, RAYWHITE);
-        EndDrawing();
-    }
+    moss::Camera *cam{new moss::Camera{width, height}};
+    moss::Mapa *mapa{new moss::Mapa{10, 10}};
+    mapa->imprimeMapa();
 
+    while (!WindowShouldClose()){
+        ClearBackground(BLACK);
+        BeginDrawing();
+            BeginMode2D(cam->getCam());
+            EndMode2D();
+        EndDrawing();
+        cam->update();
+    }
     CloseWindow();
 
     return 0;
