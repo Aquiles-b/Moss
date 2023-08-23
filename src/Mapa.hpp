@@ -7,19 +7,22 @@ class Mapa{
     public:
         Mapa();
         Mapa(const unsigned int& lines, const unsigned int& columns,
-                const std::string& texture);
+                const std::string& map, const std::string& mapGrid);
         virtual ~Mapa();
 
-        short **getMapa() const;
+        short **getMapData() const;
 
-        void imprimeMapa() const;
+        void imprimeMapData() const;
         void update();
         
     private:
-        Texture2D *texture;
+        Texture2D *map;
+        Texture2D *mapGrid;
+        Vector2 coordMap;
+        bool editMode;
         const unsigned lines;
         const unsigned columns;
-        short **mapa;
+        short **mapData;
 };
 }
 #endif

@@ -10,8 +10,8 @@ int main(void)
     InitWindow(width, height, "Moss");
     SetTargetFPS(60);
 
-    moss::Camera *cam{new moss::Camera{width, height, 45}};
-    moss::Mapa *mapa{new moss::Mapa{10, 10, "img/mapa.png"}};
+    moss::Camera *cam{new moss::Camera{width, height, 25}};
+    moss::Mapa *mapa{new moss::Mapa{10, 10, "img/map.png", "img/mapGrid.png"}};
 
     while (!WindowShouldClose()){
         ClearBackground(BLACK);
@@ -19,7 +19,6 @@ int main(void)
             BeginMode2D(cam->getCam());
                 mapa->update();
             EndMode2D();
-        DrawText(std::to_string(cam->getCam().zoom).c_str(),10, 10, 40, WHITE);
         EndDrawing();
         cam->update();
     }
