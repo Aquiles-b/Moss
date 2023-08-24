@@ -33,26 +33,31 @@ void moss::Mapa::imprimeMapData() const{
 }
 
 void moss::Mapa::update(const Vector2& mouse){
-    int isoX = abs(floor((mouse.x * 0.5f - mouse.y) / 122.0f) + 1);
-    int isoY = floor( (mouse.x * 0.5f + mouse.y) / 122.0f);
+    float isoX = (mouse.x * 0.5f - mouse.y) / 122.0f;
+    float isoY = (mouse.x * 0.5f + mouse.y) / 122.0f;
+    short l = floor(abs(isoX));
+    short c = floor(isoY);
     if (IsKeyPressed(KEY_E))
         this->editMode = !this->editMode;
     if (this->editMode) {
         DrawTexture(this->mapGrid, this->coordMap.x, this->coordMap.y, WHITE);
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-            if (isoX <= 24 && isoY >=0 && isoY <= 24)
-                this->mapData[isoX][isoY] = 1;
+            if (isoX < this->size && isoY >=0 && isoY < this->size)
+                this->mapData[l][c] = 1;
         }
-        if (IsMouseButtonUp(MOUSE_BUTTON_LEFT))
-            DrawTexture(this->bus, mouse.x - this->bus.width / 2.0f, mouse.y - this->bus.height / 2.0f, WHITE);
+        if (IsMouseButtonUp(MOUSE_BUTTON_LEFT)){
+            /* DrawTexture(this->bus, mouse.x - this->bus.width / 2.0f, mouse.y - this->bus.height / 2.0f, WHITE); */
+            DrawTexture(this->bus, mouse.x, mouse.y, WHITE);
+        }
     }
     else {
         DrawTexture(this->map, this->coordMap.x, this->coordMap.y, WHITE);
     }
     for (short i = 0; i < this->size; ++i){
         for (short j = 0; j < this->size; ++j){
-            if (this->mapData[i][j] == 1)
-                continue;
+            if (this->mapData[i][j] == 1) {
+                std::cout << "x: " <<  (i*0.5f - j) << " y: " <<  (i*0.5f + j) << std::endl;
+            }
         }
     }
 }

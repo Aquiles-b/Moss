@@ -12,7 +12,7 @@ void imprimePosi(const float& x, const float& y, const int& h){
 }
 
 void imprimePosiIso(Vector2 posi, const int& h, float lixo){
-    std::string posix = std::to_string(abs(floor( (posi.x*0.5f - posi.y) / lixo + 1)));
+    std::string posix = std::to_string(abs(floor( (posi.x*0.5f - posi.y) / lixo)));
     std::string posiy = std::to_string(floor( (posi.x*0.5f + posi.y) / lixo));
     posix = "x: " + posix + "\n\ny: " + posiy;
             DrawText(posix.c_str(), 10, h, 30, WHITE);
