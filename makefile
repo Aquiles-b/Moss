@@ -1,13 +1,19 @@
-# Forma estatica
-S_FLAGS = -Wall -Llib -lraylib -lm -lpthread -ldl -lrt -lX11 
-# Forma dinamica
+# Forma dinamica linux
 D_FLAGS = -Wall -lraylib -lm -lpthread -ldl -lrt -lX11 
-
-FLAGS = -Wall 
 nomePrograma = moss
 OBJS = src/Camera.o src/Mapa.o
 
 all: $(nomePrograma)
+
+sys = linux
+ifeq ($(sys), win)
+	#Estatica Windows
+	S_FLAGS = -Wall -Iinclude -LlibWin -static -static-libgcc -static-libstdc++ -lraylib -lopengl32 -lgdi32 -lwinmm
+else
+	#Estatica Linux
+	S_FLAGS = -Wall -Llib -lraylib -lm -lpthread -ldl -lrt -lX11 
+endif
+FLAGS = -Wall 
 
 $(nomePrograma): main.cpp $(OBJS)
 	g++ main.cpp -o $(nomePrograma) $(OBJS) $(S_FLAGS)
