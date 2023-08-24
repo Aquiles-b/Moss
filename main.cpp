@@ -19,6 +19,7 @@ int main(void)
             BeginMode2D(cam->getCam());
                 mapa->update();
             EndMode2D();
+            DrawFPS(10, 10);
         EndDrawing();
         cam->update();
     }
