@@ -1,5 +1,5 @@
 #include <iostream>
-#include <raylib.h>
+#include "../include/raylib.h"
 #ifndef MAPA_HPP
 #define MAPA_HPP
 namespace moss{

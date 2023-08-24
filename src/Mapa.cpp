@@ -1,5 +1,4 @@
 #include "Mapa.hpp"
-#include <raylib.h>
 
 moss::Mapa::Mapa(const unsigned int& lines, const unsigned int& columns,
         const std::string& map, const std::string& mapGrid)

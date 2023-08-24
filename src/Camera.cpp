@@ -1,5 +1,4 @@
 #include "Camera.hpp"
-#include <raylib.h>
 
 moss::Camera::Camera(const float& width,const float& height, const short& speed)
     : cam{new Camera2D{0}}, speed{speed}{
