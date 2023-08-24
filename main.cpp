@@ -11,31 +11,38 @@ void imprimePosi(const float& x, const float& y, const int& h){
             DrawText(posix.c_str(), 10, h, 30, WHITE);
 }
 
+void imprimePosiIso(Vector2 posi, const int& h, float lixo){
+    std::string posix = std::to_string(abs(floor( (posi.x*0.5f - posi.y) / lixo + 1)));
+    std::string posiy = std::to_string(floor( (posi.x*0.5f + posi.y) / lixo));
+    posix = "x: " + posix + "\n\ny: " + posiy;
+            DrawText(posix.c_str(), 10, h, 30, WHITE);
+}
+
 int main(void)
 {
     const float width = 1280.0f;
     const float height = 720.0f;
-    Vector2 posi{0};
+    Vector2 posiM{0}, posiMS{0};
     InitWindow(width, height, "Moss");
     SetTargetFPS(75);
 
-    moss::Mapa *mapa{new moss::Mapa{10, 10, "img/map.png", "img/mapGrid.png"}};
-    moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 1500.0f} }};
+    moss::Mapa *mapa{new moss::Mapa{25, 25, "img/map.png", "img/mapGrid.png", "img/bus.png"}};
+    moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 1500.0f}}};
 
     while (!WindowShouldClose()){
+        posiM = cam->getPosiMouse();
+        posiMS = GetScreenToWorld2D(cam->getPosiMouse(), cam->getCam());
+
         ClearBackground(BLACK);
         BeginDrawing();
             BeginMode2D(cam->getCam());
-                mapa->update();
+                mapa->update(posiMS);
             EndMode2D();
-            DrawFPS(10, 10);
-            posi = cam->getPosiMouse();
-            imprimePosi(posi.x, posi.y, 30);
-            posi = GetScreenToWorld2D(cam->getPosiMouse(), cam->getCam());
-            imprimePosi(posi.x, posi.y, 120);
+            imprimePosi(posiMS.x, posiMS.y, 30);
         EndDrawing();
         cam->update();
     }
+    mapa->imprimeMapData();
     delete cam;
     delete mapa;
     CloseWindow();

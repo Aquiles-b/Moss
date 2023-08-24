@@ -1,14 +1,13 @@
 #include "Mapa.hpp"
 
 moss::Mapa::Mapa(const unsigned int& lines, const unsigned int& columns,
-        const std::string& map, const std::string& mapGrid)
+        const std::string& map, const std::string& mapGrid, const std::string& bus)
     :mapData{new short*[lines]}, lines{lines}, columns{columns}, editMode{false}{
         this->map = LoadTexture(map.c_str());
         this->mapGrid = LoadTexture(mapGrid.c_str());
-        /* coordMap.x = GetScreenWidth() / 2.0f - this->mapGrid.width / 2.0f; */
-        /* coordMap.y = GetScreenHeight() / 2.0f - this->mapGrid.height / 2.0f; */
-        coordMap.x = -3186.0f;
-        coordMap.y = -13.12f;
+        this->bus = LoadTexture(bus.c_str());
+        coordMap.x = -3192.0f;
+        coordMap.y = -20.0f;
     for (int i = 0; i < lines; ++i)
         mapData[i] = new short[columns]{0};
 }
@@ -33,11 +32,19 @@ void moss::Mapa::imprimeMapData() const{
     }
 }
 
-void moss::Mapa::update(){
+void moss::Mapa::update(const Vector2& mouse){
     if (IsKeyPressed(KEY_E))
         this->editMode = !this->editMode;
-    if (this->editMode)
+    if (this->editMode) {
         DrawTexture(this->mapGrid, this->coordMap.x, this->coordMap.y, WHITE);
-    else
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+        int l = abs(floor((mouse.x * 0.5f - mouse.y) / 122.0f) + 1);
+        int c = floor( (mouse.x * 0.5f + mouse.y) / 122.0f);
+        if (l <= 24 && c >=0 && c <= 24)
+            this->mapData[l][c] = 1;
+        }
+    }
+    else {
         DrawTexture(this->map, this->coordMap.x, this->coordMap.y, WHITE);
+    }
 }
