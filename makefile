@@ -1,7 +1,7 @@
 # Forma dinamica linux
 D_FLAGS = -Wall -lraylib -lm -lpthread -ldl -lrt -lX11 
 nomePrograma = moss
-OBJS = src/Camera.o src/Mapa.o
+OBJS = src/Camera.o src/Mapa.o main.o
 
 all: $(nomePrograma)
 
@@ -13,10 +13,13 @@ else
 	#Estatica Linux
 	S_FLAGS = -Wall -Llib -lraylib -lm -lpthread -ldl -lrt -lX11 
 endif
-FLAGS = -Wall 
+FLAGS = -Wall -O3
 
-$(nomePrograma): main.cpp $(OBJS)
-	g++ main.cpp -o $(nomePrograma) $(OBJS) $(S_FLAGS)
+$(nomePrograma):  $(OBJS)
+	g++ -o $(nomePrograma) $(OBJS) $(S_FLAGS)
+
+main.o: main.cpp
+	g++ -c main.cpp $(FLAGS)
 
 Camera.o: src/Camera.cpp src/Camera.hpp
 	g++ -c src/Camera.cpp $(FLAGS)

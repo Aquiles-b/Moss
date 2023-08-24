@@ -1,36 +1,40 @@
 #include "Camera.hpp"
 
 moss::Camera::Camera(const float& width,const float& height, const short& speed)
-    : cam{new Camera2D{0}}, speed{speed}{
-    this->cam->target = (Vector2){width / 2.0f, height / 2.0f};
-    this->cam->offset = (Vector2){width / 2.0f, height / 2.0f};
-    this->cam->rotation = 0.0f;
-    this->cam->zoom = 0.3f;
+    : speed{speed}, posiMouse{GetMousePosition()}{
+    this->cam.target = (Vector2){width / 2.0f, height / 2.0f};
+    this->cam.offset = (Vector2){width / 2.0f, height / 2.0f};
+    this->cam.rotation = 0.0f;
+    this->cam.zoom = 0.3f;
 }
 
 moss::Camera::~Camera(){
-    delete this->cam;
 }
 
 void moss::Camera::update(){
+    this->posiMouse= GetMousePosition();
     if (IsKeyDown(KEY_S))
-        this->cam->target.y += this->speed;
+        this->cam.target.y += this->speed;
     if (IsKeyDown(KEY_W))
-        this->cam->target.y -= this->speed;
+        this->cam.target.y -= this->speed;
     if (IsKeyDown(KEY_A))
-        this->cam->target.x -= this->speed;
+        this->cam.target.x -= this->speed;
     if (IsKeyDown(KEY_D))
-        this->cam->target.x += this->speed;
+        this->cam.target.x += this->speed;
     short scrool = GetMouseWheelMove();
     if (scrool > 0){
-        if (this->cam->zoom <= 1.0f)
-            this->cam->zoom += 0.025f;
+        if (this->cam.zoom <= 1.0f)
+            this->cam.zoom += 0.025f;
     } else if (scrool < 0){
-        if (this->cam->zoom >= 0.12f)
-            this->cam->zoom -= 0.025f;
+        if (this->cam.zoom >= 0.12f)
+            this->cam.zoom -= 0.025f;
     }
 }
 
-Camera2D& moss::Camera::getCam() const{
-    return *this->cam;
+const Camera2D& moss::Camera::getCam() const{
+    return this->cam;
+}
+
+const Vector2& moss::Camera::getPosiMouse() const{
+    return this->posiMouse;
 }

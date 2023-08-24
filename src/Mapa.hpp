@@ -10,14 +10,14 @@ class Mapa{
                 const std::string& map, const std::string& mapGrid);
         virtual ~Mapa();
 
-        short **getMapData() const;
+       short **getMapData() const;
 
         void imprimeMapData() const;
         void update();
         
     private:
-        Texture2D *map;
-        Texture2D *mapGrid;
+        Texture2D map;
+        Texture2D mapGrid;
         Vector2 coordMap;
         bool editMode;
         const unsigned lines;
