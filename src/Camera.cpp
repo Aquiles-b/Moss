@@ -21,16 +21,13 @@ void moss::Camera::update(){
         this->cam->target.x -= this->speed;
     if (IsKeyDown(KEY_D))
         this->cam->target.x += this->speed;
-    switch((int)GetMouseWheelMove()){
-        case 1:
-            if (this->cam->zoom <= 1.0f)
-                this->cam->zoom += 0.025f;
-            break;
-        case -1:
-            if (this->cam->zoom >= 0.12f)
-                this->cam->zoom -= 0.025f;
-        default:
-            break;
+    short scrool = GetMouseWheelMove();
+    if (scrool > 0){
+        if (this->cam->zoom <= 1.0f)
+            this->cam->zoom += 0.025f;
+    } else if (scrool < 0){
+        if (this->cam->zoom >= 0.12f)
+            this->cam->zoom -= 0.025f;
     }
 }
 
