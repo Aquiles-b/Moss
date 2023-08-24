@@ -26,7 +26,7 @@ int main(void)
     InitWindow(width, height, "Moss");
     SetTargetFPS(75);
 
-    moss::Mapa *mapa{new moss::Mapa{25, 25, "img/map.png", "img/mapGrid.png", "img/bus.png"}};
+    moss::Mapa *mapa{new moss::Mapa{25, "img/map.png", "img/mapGrid.png", "img/bus.png"}};
     moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 1500.0f}}};
 
     while (!WindowShouldClose()){

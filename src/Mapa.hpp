@@ -7,8 +7,8 @@ namespace moss{
 class Mapa{
     public:
         Mapa();
-        Mapa(const unsigned int& lines, const unsigned int& columns,
-                const std::string& map, const std::string& mapGrid, const std::string& bus);
+        Mapa(const unsigned short& size, const std::string& map, 
+                const std::string& mapGrid, const std::string& bus);
         virtual ~Mapa();
 
        short **getMapData() const;
@@ -22,9 +22,7 @@ class Mapa{
         Texture2D bus;
         Vector2 coordMap;
         bool editMode;
-
-        const unsigned lines;
-        const unsigned columns;
+        const unsigned short size;
         short **mapData;
 };
 }
