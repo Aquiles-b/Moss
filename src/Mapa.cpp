@@ -5,8 +5,10 @@ moss::Mapa::Mapa(const unsigned int& lines, const unsigned int& columns,
     :mapData{new short*[lines]}, lines{lines}, columns{columns}, editMode{false}{
         this->map = LoadTexture(map.c_str());
         this->mapGrid = LoadTexture(mapGrid.c_str());
-        coordMap.x = GetScreenWidth() / 2.0f - this->mapGrid.width / 2.0f;
-        coordMap.y = GetScreenHeight() / 2.0f - this->mapGrid.height / 2.0f;
+        /* coordMap.x = GetScreenWidth() / 2.0f - this->mapGrid.width / 2.0f; */
+        /* coordMap.y = GetScreenHeight() / 2.0f - this->mapGrid.height / 2.0f; */
+        coordMap.x = -3186.0f;
+        coordMap.y = -13.12f;
     for (int i = 0; i < lines; ++i)
         mapData[i] = new short[columns]{0};
 }

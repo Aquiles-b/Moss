@@ -6,7 +6,8 @@
 namespace moss{
 class Camera{
     public:
-        Camera(const float& width, const float& height, const short& speed);
+        Camera(const float& width, const float& height, const short& speed, 
+                const Vector2& target);
         virtual ~Camera();
 
         const Camera2D& getCam() const;

@@ -1,9 +1,10 @@
 #include "Camera.hpp"
 
-moss::Camera::Camera(const float& width,const float& height, const short& speed)
+moss::Camera::Camera(const float& width, const float& height, const short& speed,
+        const Vector2& target)
     : speed{speed}, posiMouse{GetMousePosition()}{
-    this->cam.target = (Vector2){width / 2.0f, height / 2.0f};
     this->cam.offset = (Vector2){width / 2.0f, height / 2.0f};
+    this->cam.target = target;
     this->cam.rotation = 0.0f;
     this->cam.zoom = 0.3f;
 }
