@@ -26,7 +26,8 @@ int main(void)
     InitWindow(width, height, "Moss");
     SetTargetFPS(75);
 
-    moss::Mapa *mapa{new moss::Mapa{24, "img/mapIso.png", "img/gridIso.png", "img/busIso.png"}};
+    moss::Mapa *mapa{new moss::Mapa{"img/mapIso.png", "img/gridIso.png", "img/busIso.png",
+                        "img/mapTop.png", "img/gridTop.png", "img/busTop.png", "img/efMapIso1.png"}};
     moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 1500.0f}}};
 
     while (!WindowShouldClose()){
@@ -36,6 +37,7 @@ int main(void)
         ClearBackground(BLACK);
         BeginDrawing();
             BeginMode2D(cam->getCam());
+                mapa->draw();
                 mapa->update(posiMS);
             EndMode2D();
         EndDrawing();

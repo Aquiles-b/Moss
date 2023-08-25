@@ -1,21 +1,36 @@
 #include "Mapa.hpp"
 
-moss::Mapa::Mapa(const unsigned short& size, const std::string& map, 
-        const std::string& mapGrid, const std::string& bus)
-    :mapData{new short*[size]}, size{size}, editMode{false}{
-        this->map = LoadTexture(map.c_str());
-        this->mapGrid = LoadTexture(mapGrid.c_str());
-        this->bus = LoadTexture(bus.c_str());
-        coordMap.x = -this->map.width / 2.0f;
+moss::Mapa::Mapa(const std::string& mapIso, const std::string& gridIso,
+                const std::string& busIso, const std::string& mapTop,
+                const std::string& gridTop, const std::string& busTop,
+                const std::string& ef1)
+    :editMode{false}{
+        this->mapIso = LoadTexture(mapIso.c_str());
+        this->gridIso = LoadTexture(gridIso.c_str());
+        this->busIso = LoadTexture(busIso.c_str());
+        this->mapTop = LoadTexture(mapTop.c_str());
+        this->gridTop = LoadTexture(gridTop.c_str());
+        this->busTop = LoadTexture(busTop.c_str());
+        this->ef1 = LoadTexture(ef1.c_str());
+
+        unsigned short size = floor(this->mapTop.width / this->busTop.width);
+        this->mapData = new short*[size];
+        this->size = size;
+        coordMap.x = -this->mapIso.width / 2.0f;
         coordMap.y = 0.0f;
     for (int i = 0; i < size; ++i)
         mapData[i] = new short[size]{0};
 }
 
 moss::Mapa::~Mapa(){
-    UnloadTexture(this->map);
-    UnloadTexture(this->mapGrid);
-    for (int i = 0; i < this->size; ++i)
+    UnloadTexture(this->mapIso);
+    UnloadTexture(this->gridIso);
+    UnloadTexture(this->busIso);
+    UnloadTexture(this->mapTop);
+    UnloadTexture(this->gridTop);
+    UnloadTexture(this->busTop);
+    UnloadTexture(this->ef1);
+    for (unsigned short i = 0; i < this->size; ++i)
         delete[] this->mapData[i];
     delete[] this->mapData;
 }
@@ -32,35 +47,40 @@ void moss::Mapa::imprimeMapData() const{
     }
 }
 
-void moss::Mapa::update(const Vector2& mouse){
-    float isoX = (mouse.x * 0.5f - mouse.y) / this->bus.height;
-    float isoY = (mouse.x * 0.5f + mouse.y) / this->bus.height;
-    short l = floor(abs(isoX));
-    short c = floor(isoY);
-    float x{0}, y{0};
+void moss::Mapa::converteMatrizMapa(const short& l, const short& c, Vector2& coordIso) const{
+    coordIso.x = (c - l - 1) * this->busIso.height;
+    coordIso.y = (l + c) * this->busIso.height / 2.0f;
+}
 
-    DrawTexture(this->map, this->coordMap.x, this->coordMap.y, WHITE);
+void moss::Mapa::draw() const{
+    float x{0}, y{0};
+    Vector2 coordIso{0};
+    DrawTexture(this->mapIso, this->coordMap.x, this->coordMap.y, WHITE);
+    if (this->editMode)
+        DrawTexture(this->gridIso, this->coordMap.x, this->coordMap.y, WHITE);
+    for (unsigned short i = 0; i < this->size; ++i){
+        for (unsigned short j = 0; j < this->size; ++j){
+            if (this->mapData[i][j] == 1) {
+                converteMatrizMapa(i, j, coordIso);
+                DrawTexture(this->busIso, coordIso.x, coordIso.y, WHITE);
+            }
+        }
+    }
+}
+
+void moss::Mapa::update(const Vector2& mouse){
+    short l = floor(abs((mouse.x * 0.5f - mouse.y) / this->busIso.height));
+    short c = floor((mouse.x * 0.5f + mouse.y) / this->busIso.height);
+    Vector2 coordIso{0};
+
     if (IsKeyPressed(KEY_E))
         this->editMode = !this->editMode;
     if (this->editMode) {
-        DrawTexture(this->mapGrid, this->coordMap.x, this->coordMap.y, WHITE);
-        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-            if (isoX < this->size && isoY >=0 && isoY < this->size)
-                this->mapData[l][c] = 1;
-        }
-        if (IsMouseButtonUp(MOUSE_BUTTON_LEFT)){
-            x = (c - (l + 1)) * this->bus.height;
-            y = (l + c) * this->bus.height / 2.0f;
-            /* DrawTexture(this->bus, x, y, WHITE); */
-        }
-    }
-    for (short i = 0; i < this->size; ++i){
-        for (short j = 0; j < this->size; ++j){
-            if (this->mapData[i][j] == 1) {
-                x = (j - (i + 1)) * this->bus.height;
-                y = (i + j) * this->bus.height / 2.0f;
-                DrawTexture(this->bus, x, y, WHITE);
-            }
+        if (l < this->size && c >= 0 && c < this->size){
+            converteMatrizMapa(l, c, coordIso);
+            DrawTexture(this->busIso, coordIso.x, coordIso.y, WHITE);
+            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+                    this->mapData[l][c] = 1;
         }
     }
 }
