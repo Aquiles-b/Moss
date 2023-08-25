@@ -31,15 +31,13 @@ int main(void)
 
     while (!WindowShouldClose()){
         posiM = cam->getPosiMouse();
-        posiMS = GetScreenToWorld2D(cam->getPosiMouse(), cam->getCam());
+        posiMS = GetScreenToWorld2D(posiM, cam->getCam());
 
         ClearBackground(BLACK);
         BeginDrawing();
             BeginMode2D(cam->getCam());
                 mapa->update(posiMS);
             EndMode2D();
-            imprimePosi(posiMS.x, posiMS.y, 30);
-            imprimePosiIso(posiMS, 120, 122.0f);
         EndDrawing();
         cam->update();
     }

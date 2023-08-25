@@ -48,9 +48,8 @@ void moss::Mapa::update(const Vector2& mouse){
                 this->mapData[l][c] = 1;
         }
         if (IsMouseButtonUp(MOUSE_BUTTON_LEFT)){
-            /* DrawTexture(this->bus, -122, -9, WHITE); */
-            x = (c - (l+1))*122.0f;
-            y = (l + c)*61.2f -10.0f;
+            x = (c - (l + 1)) * 122.0f;
+            y = (l + c) * 61.2f - 10.0f;
             DrawTexture(this->bus, x, y, WHITE);
         }
     }
@@ -60,8 +59,8 @@ void moss::Mapa::update(const Vector2& mouse){
     for (short i = 0; i < this->size; ++i){
         for (short j = 0; j < this->size; ++j){
             if (this->mapData[i][j] == 1) {
-                x = (j - (i+1))*122.0f;
-                y = (i + j)*61.2f -10.0f;
+                x = (j - (i + 1)) * 122.0f;
+                y = (i + j) * 61.2f - 10.0f;
                 DrawTexture(this->bus, x, y, WHITE);
             }
         }
