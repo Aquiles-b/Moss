@@ -12,7 +12,7 @@ void imprimePosi(const float& x, const float& y, const int& h){
 }
 
 void imprimePosiIso(Vector2 posi, const int& h, float lixo){
-    std::string posix = std::to_string(abs(floor( (posi.x*0.5f - posi.y) / lixo)) - 1);
+    std::string posix = std::to_string(abs(floor( (posi.x*0.5f - posi.y) / lixo)));
     std::string posiy = std::to_string(floor( (posi.x*0.5f + posi.y) / lixo));
     posix = "x: " + posix + "\n\ny: " + posiy;
             DrawText(posix.c_str(), 10, h, 30, WHITE);
@@ -26,7 +26,7 @@ int main(void)
     InitWindow(width, height, "Moss");
     SetTargetFPS(75);
 
-    moss::Mapa *mapa{new moss::Mapa{25, "img/map.png", "img/mapGrid.png", "img/bus.png"}};
+    moss::Mapa *mapa{new moss::Mapa{24, "img/mapIso.png", "img/gridIso.png", "img/busIso.png"}};
     moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 1500.0f}}};
 
     while (!WindowShouldClose()){

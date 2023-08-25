@@ -6,8 +6,8 @@ moss::Mapa::Mapa(const unsigned short& size, const std::string& map,
         this->map = LoadTexture(map.c_str());
         this->mapGrid = LoadTexture(mapGrid.c_str());
         this->bus = LoadTexture(bus.c_str());
-        coordMap.x = -3192.0f;
-        coordMap.y = -20.0f;
+        coordMap.x = -this->map.width / 2.0f;
+        coordMap.y = 0.0f;
     for (int i = 0; i < size; ++i)
         mapData[i] = new short[size]{0};
 }
@@ -33,12 +33,13 @@ void moss::Mapa::imprimeMapData() const{
 }
 
 void moss::Mapa::update(const Vector2& mouse){
-    float isoX = (mouse.x * 0.5f - mouse.y) / 122.0f;
-    float isoY = (mouse.x * 0.5f + mouse.y) / 122.0f;
+    float isoX = (mouse.x * 0.5f - mouse.y) / this->bus.height;
+    float isoY = (mouse.x * 0.5f + mouse.y) / this->bus.height;
     short l = floor(abs(isoX));
     short c = floor(isoY);
     float x{0}, y{0};
 
+    DrawTexture(this->map, this->coordMap.x, this->coordMap.y, WHITE);
     if (IsKeyPressed(KEY_E))
         this->editMode = !this->editMode;
     if (this->editMode) {
@@ -48,19 +49,16 @@ void moss::Mapa::update(const Vector2& mouse){
                 this->mapData[l][c] = 1;
         }
         if (IsMouseButtonUp(MOUSE_BUTTON_LEFT)){
-            x = (c - (l + 1)) * 122.0f;
-            y = (l + c) * 61.2f - 10.0f;
-            DrawTexture(this->bus, x, y, WHITE);
+            x = (c - (l + 1)) * this->bus.height;
+            y = (l + c) * this->bus.height / 2.0f;
+            /* DrawTexture(this->bus, x, y, WHITE); */
         }
-    }
-    else {
-        DrawTexture(this->map, this->coordMap.x, this->coordMap.y, WHITE);
     }
     for (short i = 0; i < this->size; ++i){
         for (short j = 0; j < this->size; ++j){
             if (this->mapData[i][j] == 1) {
-                x = (j - (i + 1)) * 122.0f;
-                y = (i + j) * 61.2f - 10.0f;
+                x = (j - (i + 1)) * this->bus.height;
+                y = (i + j) * this->bus.height / 2.0f;
                 DrawTexture(this->bus, x, y, WHITE);
             }
         }
