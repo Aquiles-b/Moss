@@ -20,9 +20,7 @@ int main(void){
     texturesMap[moss::IdTexturesMap::GRIDTOP] = "img/gridTop.png";
     texturesMap[moss::IdTexturesMap::MAPISO] = "img/mapIso.png";
     texturesMap[moss::IdTexturesMap::GRIDISO] = "img/gridIso.png";
-    std::vector<std::string> floors;
-    floors.push_back("img/busIso.png");
-    floors.push_back("img/busTop.png");
+    std::vector<std::string> floors = {"img/busIso.png", "img/busTop.png"};
 
     InitWindow(width, height, "Moss");
     SetTargetFPS(75);
