@@ -15,8 +15,6 @@ int main(void){
     const float width = 1280.0f;
     const float height = 720.0f;
     Vector2 posiM{0}, posiMS{0};
-    InitWindow(width, height, "Moss");
-    SetTargetFPS(75);
     std::array<std::string, 6> texturesMap;
     texturesMap[moss::IdTexturesMap::MAPISO] = "img/mapIso.png";
     texturesMap[moss::IdTexturesMap::GRIDISO] = "img/gridIso.png";
@@ -24,6 +22,9 @@ int main(void){
     texturesMap[moss::IdTexturesMap::MAPTOP] = "img/mapTop.png";
     texturesMap[moss::IdTexturesMap::GRIDTOP] = "img/gridTop.png";
     texturesMap[moss::IdTexturesMap::BUSTOP] = "img/busTop.png";
+
+    InitWindow(width, height, "Moss");
+    SetTargetFPS(75);
 
     moss::Mapa *mapa{new moss::Mapa{texturesMap}};
     moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 1500.0f}}};
@@ -38,6 +39,8 @@ int main(void){
                 mapa->draw();
                 mapa->update(posiMS);
             EndMode2D();
+            imprimePosi(posiMS.x, posiMS.y, 30);
+            imprimePosi(posiMS.x, posiMS.y, 30);
         EndDrawing();
         cam->update();
     }

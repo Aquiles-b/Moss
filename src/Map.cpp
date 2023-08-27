@@ -37,9 +37,14 @@ void Mapa::imprimeMapData() const{
     }
 }
 
-void Mapa::converteMatrizMapa(const short& l, const short& c, Vector2& coordIso) const{
+void Mapa::matrixToMapCoord(const short& l, const short& c, Vector2& coordIso) const{
     coordIso.x = (c - l - 1) * this->tamCelulaIso;
     coordIso.y = (l + c) * this->tamCelulaIso / 2.0f;
+}
+
+void Mapa::mapToMatrixCoord(const float& x, const float& y, struct matrixCoord& coordIso) const{
+    coordIso.l = floor(abs((x * 0.5f - y) / this->tamCelulaIso));
+    coordIso.c = floor((x * 0.5f + y) / this->tamCelulaIso);
 }
 
 void Mapa::draw() const{
@@ -51,7 +56,7 @@ void Mapa::draw() const{
     for (unsigned short i = 0; i < this->size; ++i){
         for (unsigned short j = 0; j < this->size; ++j){
             if (this->mapData[i][j] == IdTexturesMap::BUSISO) {
-                converteMatrizMapa(i, j, coordIso);
+                matrixToMapCoord(i, j, coordIso);
                 DrawTexture(this->textures[IdTexturesMap::BUSISO], coordIso.x, coordIso.y, WHITE);
             }
         }
@@ -59,18 +64,18 @@ void Mapa::draw() const{
 }
 
 void Mapa::update(const Vector2& mouse){
-    short l = floor(abs((mouse.x * 0.5f - mouse.y) / this->tamCelulaIso));
-    short c = floor((mouse.x * 0.5f + mouse.y) / this->tamCelulaIso);
     Vector2 coordIso{0};
+    struct matrixCoord coordMatrix{0};
+    mapToMatrixCoord(mouse.x, mouse.y, coordMatrix);
 
     if (IsKeyPressed(KEY_E))
         this->editMode = !this->editMode;
     if (this->editMode) {
-        if (l < this->size && c >= 0 && c < this->size){
-            converteMatrizMapa(l, c, coordIso);
+        if (coordMatrix.l < this->size && coordMatrix.c >= 0 && coordMatrix.c < this->size){
+            matrixToMapCoord(coordMatrix.l, coordMatrix.c, coordIso);
             DrawTexture(this->textures[IdTexturesMap::BUSISO], coordIso.x, coordIso.y, WHITE);
             if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-                    this->mapData[l][c] = IdTexturesMap::BUSISO;
+                    this->mapData[coordMatrix.l][coordMatrix.c] = IdTexturesMap::BUSISO;
         }
     }
 }

@@ -15,6 +15,11 @@ enum IdTexturesMap{
     BUSISO
 };
 
+struct matrixCoord{
+    int l;
+    int c;
+};
+
 class Mapa{
     public:
         Mapa();
@@ -26,7 +31,8 @@ class Mapa{
         void imprimeMapData() const;
         void update(const Vector2& mouse);
         void draw() const;
-        void converteMatrizMapa(const short& l, const short& c, Vector2& coordIso) const;
+        void matrixToMapCoord(const short& l, const short& c, Vector2& coordIso) const;
+        void mapToMatrixCoord(const float& x, const float& y, struct matrixCoord& coordMatrix) const;
         
     private:
         std::array<Texture2D, 6> textures;
