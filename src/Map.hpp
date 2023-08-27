@@ -1,16 +1,24 @@
+#ifndef MAPA_HPP
+#define MAPA_HPP
+#include <array>
 #include <iostream>
 #include "../include/raylib.h"
 #include "../include/raymath.h"
-#ifndef MAPA_HPP
-#define MAPA_HPP
+
 namespace moss{
+enum IdTexturesMap{
+    MAPTOP,
+    GRIDTOP,
+    BUSTOP,
+    MAPISO,
+    GRIDISO,
+    BUSISO
+};
+
 class Mapa{
     public:
         Mapa();
-        Mapa(const std::string& mapIso, const std::string& gridIso,
-                const std::string& busIso, const std::string& mapTop,
-                const std::string& gridTop, const std::string& busTop,
-                const std::string& ef1);
+        Mapa(const std::array<std::string, 6>& textures);
         virtual ~Mapa();
 
        short **getMapData() const;
@@ -21,13 +29,8 @@ class Mapa{
         void converteMatrizMapa(const short& l, const short& c, Vector2& coordIso) const;
         
     private:
-        Texture2D mapIso;
-        Texture2D gridIso;
-        Texture2D busIso;
-        Texture2D mapTop;
-        Texture2D gridTop;
-        Texture2D busTop;
-        Texture2D ef1;
+        std::array<Texture2D, 6> textures;
+        unsigned short tamCelulaIso;
         Vector2 coordMap;
         bool editMode;
         unsigned short size;
