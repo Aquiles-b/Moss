@@ -2,19 +2,19 @@
 
 using namespace moss;
 
-Mapa::Mapa(const std::array<std::string, 6>& textures)
+Mapa::Mapa(const std::array<std::string, 4>& textures, const float& widthCellTop,
+                const float& widthCellIso)
     :editMode{false}{
         for (short i = 0; i < this->textures.size(); ++i)
             this->textures[i] = LoadTexture(textures[i].c_str());
 
-        unsigned short size = floor(this->textures[IdTexturesMap::MAPTOP].width / this->textures[IdTexturesMap::BUSTOP].width);
-        this->mapData = new short*[size];
-        this->tamCelulaIso = this->textures[IdTexturesMap::BUSISO].height;
-        this->size = size;
+        this->size = floor(this->textures[IdTexturesMap::MAPTOP].width / widthCellTop);
+        this->mapData = new short*[this->size];
+        this->heightCellIso = widthCellIso / 2.0f;
         coordMap.x = -this->textures[IdTexturesMap::MAPISO].width / 2.0f;
         coordMap.y = 0.0f;
-    for (int i = 0; i < size; ++i)
-        mapData[i] = new short[size]{0};
+    for (int i = 0; i < this->size; ++i)
+        mapData[i] = new short[this->size]{0};
 }
 
 Mapa::~Mapa(){
@@ -38,26 +38,26 @@ void Mapa::imprimeMapData() const{
 }
 
 void Mapa::matrixToMapCoord(const short& l, const short& c, Vector2& coordIso) const{
-    coordIso.x = (c - l - 1) * this->tamCelulaIso;
-    coordIso.y = (l + c) * this->tamCelulaIso / 2.0f;
+    coordIso.x = (c - l) * this->heightCellIso;
+    coordIso.y = (c + l) * this->heightCellIso / 2.0f;
 }
 
 void Mapa::mapToMatrixCoord(const float& x, const float& y, struct matrixCoord& coordIso) const{
-    coordIso.l = floor(abs((x * 0.5f - y) / this->tamCelulaIso));
-    coordIso.c = floor((x * 0.5f + y) / this->tamCelulaIso);
+    coordIso.l = floor(abs((x * 0.5f - y) / this->heightCellIso));
+    coordIso.c = floor((x * 0.5f + y) / this->heightCellIso);
 }
 
 void Mapa::draw() const{
-    float x{0}, y{0};
     Vector2 coordIso{0};
     DrawTexture(this->textures[IdTexturesMap::MAPISO], this->coordMap.x, this->coordMap.y, WHITE);
     if (this->editMode)
         DrawTexture(this->textures[IdTexturesMap::GRIDISO], this->coordMap.x, this->coordMap.y, WHITE);
     for (unsigned short i = 0; i < this->size; ++i){
         for (unsigned short j = 0; j < this->size; ++j){
-            if (this->mapData[i][j] == IdTexturesMap::BUSISO) {
+            if (this->mapData[i][j] == IdTexturesMap::CELLISO) {
                 matrixToMapCoord(i, j, coordIso);
-                DrawTexture(this->textures[IdTexturesMap::BUSISO], coordIso.x, coordIso.y, WHITE);
+                coordIso.x -= this->heightCellIso;
+                DrawTexture(this->textures[IdTexturesMap::CELLISO], coordIso.x, coordIso.y, WHITE);
             }
         }
     }
@@ -73,9 +73,10 @@ void Mapa::update(const Vector2& mouse){
     if (this->editMode) {
         if (coordMatrix.l < this->size && coordMatrix.c >= 0 && coordMatrix.c < this->size){
             matrixToMapCoord(coordMatrix.l, coordMatrix.c, coordIso);
-            DrawTexture(this->textures[IdTexturesMap::BUSISO], coordIso.x, coordIso.y, WHITE);
+            coordIso.x -= this->heightCellIso;
+            DrawTexture(this->textures[IdTexturesMap::CELLISO], coordIso.x, coordIso.y, WHITE);
             if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
-                    this->mapData[coordMatrix.l][coordMatrix.c] = IdTexturesMap::BUSISO;
+                    this->mapData[coordMatrix.l][coordMatrix.c] = IdTexturesMap::CELLISO;
         }
     }
 }
