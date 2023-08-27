@@ -1,7 +1,6 @@
 #include "include/raylib.h"
 #include <string>
 #include <iostream>
-#include <list>
 #include "src/Camera.hpp"
 #include "src/Map.hpp"
 
@@ -17,18 +16,19 @@ int main(void){
     const float height = 720.0f;
     Vector2 posiM{0}, posiMS{0};
     std::array<std::string, 4> texturesMap;
-    texturesMap[moss::IdTexturesMap::MAPISO] = "img/mapIso.png";
-    texturesMap[moss::IdTexturesMap::GRIDISO] = "img/gridIso.png";
     texturesMap[moss::IdTexturesMap::MAPTOP] = "img/mapTop.png";
     texturesMap[moss::IdTexturesMap::GRIDTOP] = "img/gridTop.png";
+    texturesMap[moss::IdTexturesMap::MAPISO] = "img/mapIso.png";
+    texturesMap[moss::IdTexturesMap::GRIDISO] = "img/gridIso.png";
+    std::vector<std::string> floors;
+    floors.push_back("img/busIso.png");
+    floors.push_back("img/busTop.png");
 
     InitWindow(width, height, "Moss");
     SetTargetFPS(75);
 
-    moss::Mapa *mapa{new moss::Mapa{texturesMap, 283.0f, 400.0f}};
+    moss::Mapa *mapa{new moss::Mapa{texturesMap, floors, 283.0f, 400.0f}};
     moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 1500.0f}}};
-
-    moss::matrixCoord mc{0};
 
     while (!WindowShouldClose()){
         posiM = cam->getPosiMouse();
@@ -38,7 +38,7 @@ int main(void){
         BeginDrawing();
             BeginMode2D(cam->getCam());
                 mapa->draw();
-                mapa->update(posiMS);
+                mapa->update(posiMS, 0);
             EndMode2D();
         EndDrawing();
         cam->update();
