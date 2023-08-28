@@ -18,18 +18,18 @@ int main(void){
     InitWindow(width, height, "Moss");
     SetTargetFPS(75);
 
-    moss::Effect *ef1{new moss::Effect("img/spr_baseIso.png", 4, {0.0f, 0.0f}, 5)};
+    moss::Effect *ef1{new moss::Effect("img/spr_baseIso.png", 4, {-1414.0f, 0.0f}, 15)};
 
-    moss::Mapa *mapa{new moss::Mapa{texturesMap, floors, 283.0f, 400.0f}};
-    moss::Camera *cam{new moss::Camera{width, height, 50, (Vector2){0.0f, 1500.0f}}};
+    moss::Mapa *mapa{new moss::Mapa{texturesMap, floors, 83.3f, 118.0f}};
+    moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 700.0f}}};
 
     while (!WindowShouldClose()){
         ClearBackground(BLACK);
         BeginDrawing();
             BeginMode2D(cam->getCam());
+                ef1->update();
                 mapa->draw();
                 mapa->update(cam->getMouseWorld(), 0);
-                ef1->update();
             EndMode2D();
         EndDrawing();
         cam->update();
