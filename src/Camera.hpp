@@ -11,13 +11,20 @@ class Camera{
         virtual ~Camera();
 
         const Camera2D& getCam() const;
-        const Vector2& getPosiMouse() const;
+        const Vector2& getMouse() const;
+        const Vector2& getMouseWorld() const;
+        const short& getScrool() const;
     
         void update();
+        void showMouseInfo(const bool& inScreen) const;
     private:
         Camera2D cam;
         short speed;
-        Vector2 posiMouse;
+        Vector2 mouse;
+        Vector2 mouseWorld;
+        short scrool;
+
+        void camColision();
 };
 }
 

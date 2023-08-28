@@ -4,13 +4,6 @@
 #include "src/Camera.hpp"
 #include "src/Map.hpp"
 
-void imprimePosi(const float& x, const float& y, const int& h){
-    std::string posix = std::to_string(x);
-    std::string posiy = std::to_string(y);
-    posix = "x: " + posix + "\n\ny: " + posiy;
-            DrawText(posix.c_str(), 10, h, 30, WHITE);
-}
-
 int main(void){
     const float width = 1280.0f;
     const float height = 720.0f;
@@ -26,17 +19,14 @@ int main(void){
     SetTargetFPS(75);
 
     moss::Mapa *mapa{new moss::Mapa{texturesMap, floors, 283.0f, 400.0f}};
-    moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 1500.0f}}};
+    moss::Camera *cam{new moss::Camera{width, height, 50, (Vector2){0.0f, 1500.0f}}};
 
     while (!WindowShouldClose()){
-        posiM = cam->getPosiMouse();
-        posiMS = GetScreenToWorld2D(posiM, cam->getCam());
-
         ClearBackground(BLACK);
         BeginDrawing();
             BeginMode2D(cam->getCam());
                 mapa->draw();
-                mapa->update(posiMS, 0);
+                mapa->update(cam->getMouseWorld(), 0);
             EndMode2D();
         EndDrawing();
         cam->update();
