@@ -1,7 +1,7 @@
 # Forma dinamica linux
 D_FLAGS = -Wall -lraylib -lm -lpthread -ldl -lrt -lX11 
 nomePrograma = moss
-OBJS = src/Camera.o src/Map.o main.o
+OBJS = src/Effect.o src/Camera.o src/Map.o main.o
 
 all: $(nomePrograma)
 
@@ -26,6 +26,9 @@ Camera.o: src/Camera.cpp src/Camera.hpp
 
 Map.o: src/Map.cpp src/Map.hpp
 	g++ -c src/Map.cpp $(FLAGS)
+
+Effect.o: src/Effect.cpp src/Effect.hpp
+	g++ -c src/Effect.cpp $(FLAGS)
 
 run: $(nomePrograma)
 	./$(nomePrograma)

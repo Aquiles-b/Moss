@@ -62,7 +62,7 @@ void Mapa::draw() const{
             if (this->mapData[i][j] != -1){
                 matrixToMapCoord(i, j, coordIso);
                 coordIso.x -= this->heightCellIso;
-                DrawTexture(this->floors[this->mapData[i][j]], coordIso.x, coordIso.y, WHITE);
+                DrawTextureV(this->floors[this->mapData[i][j]], coordIso, WHITE);
             }
         }
     }
@@ -79,7 +79,7 @@ void Mapa::update(const Vector2& mouse, const int& floor){
         if (coordMtx.l < this->size && coordMtx.c >= 0 && coordMtx.c < this->size){
             matrixToMapCoord(coordMtx.l, coordMtx.c, coordIso);
             coordIso.x -= this->heightCellIso;
-            DrawTexture(this->floors[floor], coordIso.x, coordIso.y, WHITE);
+            DrawTextureV(this->floors[floor], coordIso, WHITE);
             if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && this->mapData[coordMtx.l][coordMtx.c] == -1)
                 this->mapData[coordMtx.l][coordMtx.c] = floor;
         }
