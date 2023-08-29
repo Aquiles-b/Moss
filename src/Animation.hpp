@@ -4,21 +4,22 @@
 #include <iostream>
 
 namespace moss{
-class Effect{
+class Animation{
     public:
-        Effect(const std::string& efx, const int& frames, const Vector2& posi, const int& speed);
-        virtual ~Effect();
+        Animation(const std::string& spr, const int& frames, const int& speed);
+        virtual ~Animation();
 
-        void update();
+        const Texture2D& getImg() const;
+
+        void linearAnimation(struct Vector2& coord);
     private:
-        Texture2D sprite;
+        Texture2D img;
         Rectangle frameRec;
         int frameWidth;
         int frameIndex;
         int maxFrames;
         int delay;
         int speed;
-        Vector2 posi;
 };
 }
 #endif

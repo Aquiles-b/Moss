@@ -53,7 +53,6 @@ void moss::Camera::showMouseInfo(const bool& inScreen) const{
         std::cout << posi << std::endl;
 }
 
-
 const Camera2D& moss::Camera::getCam() const{
     return this->cam;
 }
