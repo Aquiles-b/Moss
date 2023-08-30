@@ -1,3 +1,4 @@
+#include "headers/Animation.hpp"
 #include "include/raylib.h"
 #include <string>
 #include <iostream>
@@ -22,16 +23,16 @@ int main(void){
     std::vector<moss::Component*> components;
     moss::Floor *bus{new moss::Floor{"img/busIso.png"}};
     components.push_back(bus);
-    moss::Component *base{new moss::Component{"img/spr_baseIso.png", 4, {-1414.0f, 0.0f}, 15}};
+    moss::Animation *base{new moss::Animation{"img/spr_baseIso.png", 4, 15}};
     moss::Map *mapa{new moss::Map{texturesMap, components, 83.3f, 118.0f}};
     moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 700.0f}}};
 
-    Vector2 coordBase = {-1414.0f, 0.0f};
+    Vector2 coordBase{-1414.0f, 0.0f};
     while (!WindowShouldClose()){
         ClearBackground(BLACK);
         BeginDrawing();
             BeginMode2D(cam->getCam());
-                base->update(coordBase);
+                base->linearAnimation(coordBase);
                 mapa->draw();
                 mapa->update(cam->getMouseWorld(), 0);
             EndMode2D();

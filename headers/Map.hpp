@@ -22,6 +22,7 @@ class Map{
         void draw() const;
         void matrixToMapCoord(const int& l, const int& c, Vector2& coordIso) const;
         void mapToMatrixCoord(const float& x, const float& y, int& l, int& c) const;
+        bool colision(const int& l, const int& c, const int& width, const int& height) const;
     private:
         std::array<Texture2D, 4> textures;
         std::vector<Component*> components;
