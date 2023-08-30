@@ -1,4 +1,4 @@
-#include "Camera.hpp"
+#include "../headers/Camera.hpp"
 
 moss::Camera::Camera(const float& width, const float& height, const short& speed,
         const Vector2& target)

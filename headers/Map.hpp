@@ -8,19 +8,12 @@
 #include "Component.hpp"
 
 namespace moss{
-enum IdTexturesMap{
-    MAPTOP,
-    GRIDTOP,
-    MAPISO,
-    GRIDISO,
-};
-
-class Mapa{
+class Map{
     public:
-        Mapa();
-        Mapa(const std::array<std::string, 4>& textures, const std::vector<Component*>& components,
+        Map();
+        Map(const std::array<std::string, 4>& textures, const std::vector<Component*>& components,
                 const float& widthCellTop, const float& widthCellIso);
-        virtual ~Mapa();
+        virtual ~Map();
 
        int **getMapData() const;
 

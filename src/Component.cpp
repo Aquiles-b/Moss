@@ -1,4 +1,4 @@
-#include "Component.hpp"
+#include "../headers/Component.hpp"
 
 using namespace moss;
 

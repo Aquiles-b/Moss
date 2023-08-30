@@ -1,18 +1,17 @@
-#include "Map.hpp"
-#include "Component.hpp"
+#include "../headers/Map.hpp"
+#include "../headers/IdTextureMap.hpp"
 
-using namespace moss;
 
-Mapa::Mapa(const std::array<std::string, 4>& textures, const std::vector<Component*>& components,
+moss::Map::Map(const std::array<std::string, 4>& textures, const std::vector<Component*>& components,
                 const float& widthCellTop, const float& widthCellIso)
     :editMode{false}{
     for (short i = 0; i < textures.size(); ++i)
         this->textures[i] = LoadTexture(textures[i].c_str());
     this->components = components;
 
-    this->size = floor(this->textures[IdTexturesMap::MAPTOP].width / widthCellTop);
+    this->size = floor(this->textures[static_cast<int>(IdTextureMap::MAPTOP)].width / widthCellTop);
     this->heightCellIso = widthCellIso / 2.0f;
-    coordMap.x = -this->textures[IdTexturesMap::MAPISO].width / 2.0f;
+    coordMap.x = -this->textures[static_cast<int>(IdTextureMap::MAPISO)].width / 2.0f;
     coordMap.y = 0.0f;
 
     this->mapData = new int*[this->size];
@@ -23,16 +22,16 @@ Mapa::Mapa(const std::array<std::string, 4>& textures, const std::vector<Compone
     }
 }
 
-Mapa::~Mapa(){
+moss::Map::~Map(){
     for (int i = 0; i < this->textures.size(); ++i)
         UnloadTexture(this->textures[i]);
 }
  
-int **Mapa::getMapData() const{
+int **moss::Map::getMapData() const{
     return this->mapData;
 }
 
-void Mapa::imprimeMapData() const{
+void moss::Map::imprimeMapData() const{
     for (int i = 0; i < this->size; ++i){
         for (int j = 0; j < this->size; ++j)
             std::cout << this->mapData[i][j] << "  ";
@@ -40,21 +39,21 @@ void Mapa::imprimeMapData() const{
     }
 }
 
-void Mapa::matrixToMapCoord(const int& l, const int& c, Vector2& coordIso) const{
+void moss::Map::matrixToMapCoord(const int& l, const int& c, Vector2& coordIso) const{
     coordIso.x = (c - l) * this->heightCellIso;
     coordIso.y = (c + l) * this->heightCellIso / 2.0f;
 }
 
-void Mapa::mapToMatrixCoord(const float& x, const float& y, int& l, int& c) const{
+void moss::Map::mapToMatrixCoord(const float& x, const float& y, int& l, int& c) const{
     l = floor(abs((x * 0.5f - y) / this->heightCellIso));
     c = floor((x * 0.5f + y) / this->heightCellIso);
 }
 
-void Mapa::draw() const{
+void moss::Map::draw() const{
     Vector2 coordIso{0};
-    DrawTexture(this->textures[IdTexturesMap::MAPISO], this->coordMap.x, this->coordMap.y, WHITE);
+    DrawTexture(this->textures[static_cast<int>(IdTextureMap::MAPISO)], this->coordMap.x, this->coordMap.y, WHITE);
     if (this->editMode)
-        DrawTexture(this->textures[IdTexturesMap::GRIDISO], this->coordMap.x, this->coordMap.y, WHITE);
+        DrawTexture(this->textures[static_cast<int>(IdTextureMap::GRIDISO)], this->coordMap.x, this->coordMap.y, WHITE);
     for (unsigned short i = 0; i < this->size; ++i){
         for (unsigned short j = 0; j < this->size; ++j){
             if (this->mapData[i][j] > -1){
@@ -66,7 +65,7 @@ void Mapa::draw() const{
     }
 }
 
-void Mapa::update(const Vector2& mouse, const int& comp){
+void moss::Map::update(const Vector2& mouse, const int& comp){
     Vector2 coordIso{0};
     int l{0}, c{0};
     mapToMatrixCoord(mouse.x, mouse.y, l, c);

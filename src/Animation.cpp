@@ -1,4 +1,4 @@
-#include "Animation.hpp"
+#include "../headers/Animation.hpp"
 
 using namespace moss;
 

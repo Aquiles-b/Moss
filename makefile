@@ -21,19 +21,19 @@ $(nomePrograma): $(OBJS)
 main.o: main.cpp
 	g++ -c main.cpp $(FLAGS) 
 
-Camera.o: src/Camera.cpp src/Camera.hpp
+Camera.o: src/Camera.cpp headers/Camera.hpp
 	g++ -c src/Camera.cpp $(FLAGS)
 
-Map.o: src/Map.cpp src/Map.hpp
+Map.o: src/Map.cpp headers/Map.hpp
 	g++ -c src/Map.cpp $(FLAGS)
 
-Animation.o: src/Animation.cpp src/Animation.hpp
+Animation.o: src/Animation.cpp headers/Animation.hpp
 	g++ -c src/Animation.cpp $(FLAGS)
 
-Component.o: src/Component.cpp src/Component.hpp
+Component.o: src/Component.cpp headers/Component.hpp
 	g++ -c src/Component.cpp $(FLAGS)
 
-Floor.o: src/Floor.cpp src/Floor.hpp
+Floor.o: src/Floor.cpp headers/Floor.hpp
 	g++ -c src/Floor.cpp $(FLAGS)
 
 run: $(nomePrograma)
