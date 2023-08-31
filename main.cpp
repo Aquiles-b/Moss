@@ -22,11 +22,14 @@ int main(void){
 
     std::vector<moss::Component*> components;
     moss::Floor *bus{new moss::Floor{"img/busIso.png"}};
+    moss::Component *ram{new moss::Component{"img/ramIso.png", 1, {0.0f, 0.0f}, 1, 4, 2, {-235.0f, -161.0f}}};
     components.push_back(bus);
-    moss::Animation *base{new moss::Animation{"img/spr_baseIso.png", 4, 15}};
+    components.push_back(ram);
+    moss::Animation *base{new moss::Animation{"img/spr_baseIso.png", 4, 15, {0.0f, 0.0f}}};
     moss::Map *mapa{new moss::Map{texturesMap, components, 83.3f, 118.0f}};
     moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 700.0f}}};
 
+    int comp{0};
     Vector2 coordBase{-1414.0f, 0.0f};
     while (!WindowShouldClose()){
         ClearBackground(BLACK);
@@ -34,10 +37,14 @@ int main(void){
             BeginMode2D(cam->getCam());
                 base->linearAnimation(coordBase);
                 mapa->draw();
-                mapa->update(cam->getMouseWorld(), 0);
+                mapa->update(cam->getMouseWorld(), comp);
             EndMode2D();
         EndDrawing();
         cam->update();
+        if (IsKeyPressed(KEY_ONE))
+            comp = 0;
+        if (IsKeyPressed(KEY_TWO))
+            comp = 1;
     }
     mapa->imprimeMapData();
     delete cam;

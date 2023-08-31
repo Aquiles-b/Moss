@@ -7,11 +7,14 @@ namespace moss{
 class Animation{
     public:
         Animation(const std::string& spr, const int& frames, const int& speed);
+        Animation(const std::string& spr, const int& frames, const int& speed,
+                  const Vector2& offset);
         virtual ~Animation();
 
         const Texture2D& getImg() const;
+        const Vector2& getOffset() const;
 
-        void linearAnimation(struct Vector2& coord);
+        void linearAnimation(Vector2& coord);
     private:
         Texture2D img;
         Rectangle frameRec;
@@ -20,6 +23,7 @@ class Animation{
         int maxFrames;
         int delay;
         int speed;
+        Vector2 offset;
 };
 }
 #endif
