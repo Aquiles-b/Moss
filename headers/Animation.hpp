@@ -14,7 +14,7 @@ class Animation{
         const Texture2D& getImg() const;
         const Vector2& getOffset() const;
 
-        void linearAnimation(Vector2& coord);
+        void linearAnimation(Vector2& coord, const Color& c);
     private:
         Texture2D img;
         Rectangle frameRec;

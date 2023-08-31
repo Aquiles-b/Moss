@@ -62,7 +62,7 @@ void moss::Map::draw() const{
         for (unsigned short j = 0; j < this->size; ++j){
             if (this->mapData[i][j] > -1){
                 matrixToMapCoord(i, j, coordIso);
-                this->components[this->mapData[i][j]]->update(coordIso);
+                this->components[this->mapData[i][j]]->update(coordIso, WHITE);
             }
         }
     }
@@ -81,14 +81,16 @@ void moss::Map::update(const Vector2& mouse, const int& comp){
             widthComp = this->components[comp]->getWidth();
             heightComp = this->components[comp]->getHeight();
             matrixToMapCoord(l, c, coordIso);
-            this->components[comp]->update(coordIso);
-            if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-                if(this->components[comp]->isInsideLimits(l, c, this->size) && !colision(l, c, widthComp, heightComp)){
-                    for (int i = 0; i < widthComp; ++i)
-                        for (int j = 0; j < heightComp; ++j)
-                            this->mapData[l-i][c-j] = -2;
-                    this->mapData[l][c] = this->components[comp]->getId();
-                }
+            if(this->components[comp]->isInsideLimits(l, c, this->size) && !colision(l, c, widthComp, heightComp)){
+                this->components[comp]->update(coordIso, WHITE);
+                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
+                        for (int i = 0; i < widthComp; ++i)
+                            for (int j = 0; j < heightComp; ++j)
+                                this->mapData[l-i][c-j] = -2;
+                        this->mapData[l][c] = this->components[comp]->getId();
+                    }
+            } else {
+                this->components[comp]->update(coordIso, RED);
             }
         }
     }

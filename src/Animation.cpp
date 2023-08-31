@@ -20,7 +20,7 @@ Animation::~Animation(){
     UnloadTexture(this->img);
 }
 
-void Animation::linearAnimation(Vector2& coord){
+void Animation::linearAnimation(Vector2& coord, const Color& c){
     coord.x += this->offset.x;
     coord.y += this->offset.y;
     if (this->delay > this->speed){
@@ -29,7 +29,7 @@ void Animation::linearAnimation(Vector2& coord){
         this->frameRec.x = this->frameWidth * this->frameIndex;
         this->delay = 0;
     }
-    DrawTextureRec(this->img, this->frameRec, coord, WHITE);
+    DrawTextureRec(this->img, this->frameRec, coord, c);
     this->delay++;
 }
 

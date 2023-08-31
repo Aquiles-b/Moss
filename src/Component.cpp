@@ -21,8 +21,8 @@ Component::~Component(){
     delete this->sprite;
 }
 
-void Component::update(Vector2& coord){
-    sprite->linearAnimation(coord);
+void Component::update(Vector2& coord, const Color& c){
+    sprite->linearAnimation(coord, c);
 }  
 bool Component::isInsideLimits(const int& l, const int& c, const int& size) const{
     if (l - (this->width-1) < 0 || c - (this->height-1) < 0){

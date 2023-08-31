@@ -17,7 +17,7 @@ class Component{
         const int& getHeight() const;
         const moss::Animation *getSprite() const;
 
-        virtual void update(Vector2& coord);
+        virtual void update(Vector2& coord, const Color& c);
         bool isInsideLimits(const int& l, const int& c, const int& size) const;
     private:
         static int64_t nextId;

@@ -7,7 +7,7 @@ class Floor : public Component{
         Floor(const std::string& img);
         virtual ~Floor();
 
-        void update(struct Vector2& coord) override;
+        void update(Vector2& coord, const Color& c) override;
     private:
 };
 }

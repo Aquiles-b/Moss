@@ -23,8 +23,10 @@ int main(void){
     std::vector<moss::Component*> components;
     moss::Floor *bus{new moss::Floor{"img/busIso.png"}};
     moss::Component *ram{new moss::Component{"img/ramIso.png", 1, {0.0f, 0.0f}, 1, 4, 2, {-235.0f, -161.0f}}};
+    moss::Component *cpu{new moss::Component{"img/cpuIso.png", 1, {0.0f, 0.0f}, 1, 3, 3, {-200.0f, -205.0f}}};
     components.push_back(bus);
     components.push_back(ram);
+    components.push_back(cpu);
     moss::Animation *base{new moss::Animation{"img/spr_baseIso.png", 4, 15, {0.0f, 0.0f}}};
     moss::Map *mapa{new moss::Map{texturesMap, components, 83.3f, 118.0f}};
     moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 700.0f}}};
@@ -35,7 +37,7 @@ int main(void){
         ClearBackground(BLACK);
         BeginDrawing();
             BeginMode2D(cam->getCam());
-                base->linearAnimation(coordBase);
+                base->linearAnimation(coordBase, WHITE);
                 mapa->draw();
                 mapa->update(cam->getMouseWorld(), comp);
             EndMode2D();
@@ -45,6 +47,8 @@ int main(void){
             comp = 0;
         if (IsKeyPressed(KEY_TWO))
             comp = 1;
+        if (IsKeyPressed(KEY_THREE))
+            comp = 2;
     }
     mapa->imprimeMapData();
     delete cam;
