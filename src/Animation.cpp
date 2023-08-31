@@ -20,7 +20,7 @@ Animation::~Animation(){
     UnloadTexture(this->img);
 }
 
-void Animation::linearAnimation(Vector2& coord, const Color& c){
+void Animation::linearAnimation(Vector2 coord, const Color& c){
     coord.x += this->offset.x;
     coord.y += this->offset.y;
     if (this->delay > this->speed){

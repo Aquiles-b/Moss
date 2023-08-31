@@ -68,32 +68,44 @@ void moss::Map::draw() const{
     }
 }
 
+bool moss::Map::tryDrawInMatrix(Component* component, const int& l, const int& c, Vector2& coordIso){
+    int widthComp{0}, heightComp{0};
+    widthComp = component->getWidth();
+    heightComp = component->getHeight();
+    if(!isComponentInsideLimits(l, c, widthComp, heightComp) || colision(l, c, widthComp, heightComp))
+        return false;
+    component->update(coordIso, WHITE);
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
+        for (int i = 0; i < widthComp; ++i)
+            for (int j = 0; j < heightComp; ++j)
+                this->mapData[l-i][c-j] = -2;
+        this->mapData[l][c] = component->getId();
+    }
+    
+    return true;
+}
+
 void moss::Map::update(const Vector2& mouse, const int& comp){
     Vector2 coordIso{0};
     int l{0}, c{0};
-    int widthComp{0}, heightComp{0};
     mapToMatrixCoord(mouse.x, mouse.y, l, c);
+    matrixToMapCoord(l, c, coordIso);
 
     if (IsKeyPressed(KEY_E))
         this->editMode = !this->editMode;
     if (this->editMode) {
         if (l < this->size && c >= 0 && c < this->size){
-            widthComp = this->components[comp]->getWidth();
-            heightComp = this->components[comp]->getHeight();
-            matrixToMapCoord(l, c, coordIso);
-            if(this->components[comp]->isInsideLimits(l, c, this->size) && !colision(l, c, widthComp, heightComp)){
-                this->components[comp]->update(coordIso, WHITE);
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-                        for (int i = 0; i < widthComp; ++i)
-                            for (int j = 0; j < heightComp; ++j)
-                                this->mapData[l-i][c-j] = -2;
-                        this->mapData[l][c] = this->components[comp]->getId();
-                    }
-            } else {
+            if (!tryDrawInMatrix(this->components[comp], l, c, coordIso))
                 this->components[comp]->update(coordIso, RED);
-            }
         }
     }
+}
+
+bool moss::Map::isComponentInsideLimits(const int& l, const int& c, const int& width, const int& height) const{
+    if (l - (width-1) < 0 || c - (height-1) < 0){
+        return false;
+    }
+    return true;
 }
 
 bool moss::Map::colision(const int& l, const int& c, const int& width, const int& height) const{

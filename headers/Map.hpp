@@ -23,6 +23,7 @@ class Map{
         void matrixToMapCoord(const int& l, const int& c, Vector2& coordIso) const;
         void mapToMatrixCoord(const float& x, const float& y, int& l, int& c) const;
         bool colision(const int& l, const int& c, const int& width, const int& height) const;
+        bool isComponentInsideLimits(const int& l, const int& c, const int& width, const int& height) const;
     private:
         std::array<Texture2D, 4> textures;
         std::vector<Component*> components;
@@ -31,6 +32,8 @@ class Map{
         bool editMode;
         unsigned short size;
         int **mapData;
+
+        bool tryDrawInMatrix(Component* component, const int& l, const int& c, Vector2& coordIso);
 };
 }
 #endif
