@@ -8,14 +8,17 @@
 #include "Component.hpp"
 
 namespace moss{
+struct cellMatrix{
+    int value;
+    int lOrigin;
+    int cOrigin;
+};
 class Map{
     public:
         Map();
         Map(const std::array<std::string, 4>& textures, const std::vector<Component*>& components,
                 const float& widthCellTop, const float& widthCellIso);
         virtual ~Map();
-
-       int **getMapData() const;
 
         void imprimeMapData() const;
         void update(const Vector2& mouse, const int& floor);
@@ -31,12 +34,12 @@ class Map{
         Vector2 coordMap;
         bool editMode;
         unsigned short size;
-        int **mapData;
+        struct cellMatrix **mapData;
 
         bool tryDrawInMatrix(Component* component, const int& l, const int& c, Vector2& coordIso);
-        void destructionMode(int l, int c, Vector2& coordIso);
-        void fillColisionMatrix(const int& l, const int& c, const int& widthComp, 
-                            const int& heightComp, const int& numFill, const bool& decrease);
+        void destructionMode(int l, int c);
+        void fillColisionMatrix(const int& l, const int& c, const int& widthComp, const int& heightComp,
+                                const int& numFill, const int& lOrigin, const int& cOrigin);
 };
 }
 #endif
