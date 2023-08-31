@@ -49,6 +49,8 @@ int main(void){
             comp = 1;
         if (IsKeyPressed(KEY_THREE))
             comp = 2;
+        if (IsKeyPressed(KEY_FOUR))
+            comp = -1;
     }
     mapa->imprimeMapData();
     delete cam;
