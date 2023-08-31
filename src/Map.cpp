@@ -121,6 +121,8 @@ void moss::Map::destructionMode(int l, int c, Vector2& coordIso){
     if (compIndex == -1)
         return;
     if (compIndex < -1){
+        std::cout << "Colisao de componente" << std::endl;
+        return;
     }
     widthComp = this->components[compIndex]->getWidth();
     heightComp = this->components[compIndex]->getHeight();
