@@ -69,10 +69,15 @@ void moss::Map::draw() const{
 }
 
 void moss::Map::fillColisionMatrix(const int& l, const int& c, const int& widthComp, 
-                            const int& heightComp, const int& numFill){
-    for (int i = 0; i < widthComp; ++i)
-        for (int j = 0; j < heightComp; ++j)
-            this->mapData[l-i][c-j] = numFill;
+                            const int& heightComp, const int& numFill, const bool& decrease){
+    for (int i = 0; i < widthComp; ++i){
+        for (int j = 0; j < heightComp; ++j){
+            if (decrease)
+                this->mapData[l-i][c-j] = numFill - i - j;
+            else
+                this->mapData[l-i][c-j] = numFill;
+        }
+    }
 }
 
 bool moss::Map::tryDrawInMatrix(Component* component, const int& l, const int& c, Vector2& coordIso){
@@ -83,7 +88,7 @@ bool moss::Map::tryDrawInMatrix(Component* component, const int& l, const int& c
         return false;
     component->update(coordIso, WHITE);
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
-        fillColisionMatrix(l, c, widthComp, heightComp, -2);
+        fillColisionMatrix(l, c, widthComp, heightComp, -1, true);
         this->mapData[l][c] = component->getId();
     }
     return true;
@@ -110,16 +115,18 @@ bool moss::Map::colision(const int& l, const int& c, const int& width, const int
     return false;
 }
 
-void moss::Map::destructionMode(const int& l, const int& c, Vector2& coordIso){
+void moss::Map::destructionMode(int l, int c, Vector2& coordIso){
     int compIndex{this->mapData[l][c]};
-    if (compIndex > -1){
-        int widthComp{0}, heightComp{0};
-        widthComp = this->components[compIndex]->getWidth();
-        heightComp = this->components[compIndex]->getHeight();
-        this->components[compIndex]->update(coordIso, RED);
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-            fillColisionMatrix(l, c, widthComp, heightComp, -1);
+    int widthComp{0}, heightComp{0};
+    if (compIndex == -1)
+        return;
+    if (compIndex < -1){
     }
+    widthComp = this->components[compIndex]->getWidth();
+    heightComp = this->components[compIndex]->getHeight();
+    this->components[compIndex]->update(coordIso, RED);
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        fillColisionMatrix(l, c, widthComp, heightComp, -1, false);
 }
 
 void moss::Map::update(const Vector2& mouse, const int& comp){

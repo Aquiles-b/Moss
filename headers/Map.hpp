@@ -34,9 +34,9 @@ class Map{
         int **mapData;
 
         bool tryDrawInMatrix(Component* component, const int& l, const int& c, Vector2& coordIso);
-        void destructionMode(const int& l, const int& c, Vector2& coordIso);
+        void destructionMode(int l, int c, Vector2& coordIso);
         void fillColisionMatrix(const int& l, const int& c, const int& widthComp, 
-                            const int& heightComp, const int& numFill);
+                            const int& heightComp, const int& numFill, const bool& decrease);
 };
 }
 #endif
