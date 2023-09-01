@@ -44,7 +44,8 @@ int main(void){
                 mapa->update(cam->getMouseWorld(), hud->getSelected());
             EndMode2D();
             hud->draw(cam->getMouse(), mapa->getEditMode());
-            hud->update();
+            hud->update(cam->getMouse());
+            cam->showMouseInfo(false);
         EndDrawing();
         cam->update();
     }
