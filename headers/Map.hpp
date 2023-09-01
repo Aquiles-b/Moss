@@ -20,6 +20,8 @@ class Map{
                 const float& widthCellTop, const float& widthCellIso);
         virtual ~Map();
 
+        const bool getEditMode() const;
+
         void imprimeMapData() const;
         void update(const Vector2& mouse, const int& floor);
         void draw() const;

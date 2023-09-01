@@ -30,7 +30,6 @@ moss::Map::~Map(){
         UnloadTexture(this->textures[i]);
     for (int i = 0; i < this->size; ++i)
         delete[] this->mapData[i];
-    
     delete[] this->mapData;
 }
  
@@ -150,3 +149,6 @@ void moss::Map::update(const Vector2& mouse, const int& comp){
     }
 }
 
+const bool moss::Map::getEditMode() const{
+    return this->editMode;
+}

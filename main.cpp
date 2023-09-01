@@ -1,4 +1,3 @@
-#include "headers/Animation.hpp"
 #include "include/raylib.h"
 #include <string>
 #include <iostream>
@@ -7,6 +6,8 @@
 #include "headers/Floor.hpp"
 #include "headers/Map.hpp"
 #include "headers/IdTextureMap.hpp"
+#include "headers/Hud.hpp"
+#include "headers/Animation.hpp"
 
 int main(void){
     const float width{1280.0f};
@@ -30,6 +31,7 @@ int main(void){
     moss::Animation *base{new moss::Animation{"img/spr_baseIso.png", 4, 15, {0.0f, 0.0f}}};
     moss::Map *mapa{new moss::Map{texturesMap, components, 83.3f, 118.0f}};
     moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 700.0f}}};
+    moss::Hud *hud{new moss::Hud{"img/hudEditMode.png", "img/hammer.png"}};
 
     int comp{0};
     Vector2 coordBase{-1414.0f, 0.0f};
@@ -39,23 +41,18 @@ int main(void){
             BeginMode2D(cam->getCam());
                 base->linearAnimation(coordBase, WHITE);
                 mapa->draw();
-                mapa->update(cam->getMouseWorld(), comp);
+                mapa->update(cam->getMouseWorld(), hud->getSelected());
             EndMode2D();
+            hud->draw(cam->getMouse(), mapa->getEditMode());
+            hud->update();
         EndDrawing();
         cam->update();
-        if (IsKeyPressed(KEY_ONE))
-            comp = 0;
-        if (IsKeyPressed(KEY_TWO))
-            comp = 1;
-        if (IsKeyPressed(KEY_THREE))
-            comp = 2;
-        if (IsKeyPressed(KEY_FOUR))
-            comp = -1;
     }
     mapa->imprimeMapData();
     delete cam;
     delete base;
     delete mapa;
+    delete hud;
     CloseWindow();
 
     return 0;
