@@ -9,6 +9,7 @@ Animation::Animation(const std::string& spr, const int& frames, const int& speed
     this->frameRec = {0.0f, 0.0f, static_cast<float>(this->frameWidth), static_cast<float>(this->img.height)};
     this->offset.x = -this->img.height;
     this->offset.y = 0.0f;
+    this->frameHeight = 0;
 }
 
 Animation::Animation(const std::string& spr, const int& frames, const int& speed,
@@ -16,14 +17,25 @@ Animation::Animation(const std::string& spr, const int& frames, const int& speed
     :Animation{spr, frames, speed}{
         this->offset = offset;
 }
+Animation::Animation(const std::string& spr, const int& frames, const int& speed,
+          const Vector2& offset, const int& frameHeight)
+    :Animation{spr, frames, speed, offset}{
+        this->frameHeight = frameHeight;
+        this->frameRec.height = frameHeight;
+}
 
 Animation::~Animation(){
     UnloadTexture(this->img);
 }
 
 void Animation::linearAnimation(Vector2 coord, const Color& c){
+    linearAnimationHeight(coord, 0, c);
+}
+
+void Animation::linearAnimationHeight(Vector2 coord, const int& heightIndex, const Color& c){
     coord.x += this->offset.x;
     coord.y += this->offset.y;
+    this->frameRec.y = this->frameHeight * heightIndex;
     if (this->delay > this->speed){
         this->frameIndex++;
         this->frameIndex %= this->maxFrames;

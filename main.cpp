@@ -8,6 +8,7 @@
 #include "headers/IdTextureMap.hpp"
 #include "headers/Hud.hpp"
 #include "headers/Animation.hpp"
+#include "headers/Robot.hpp"
 
 int main(void){
     const float width{1280.0f};
@@ -33,13 +34,17 @@ int main(void){
     moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 700.0f}}};
     moss::Hud *hud{new moss::Hud{"img/hudEditMode.png", "img/hammer.png"}};
 
+    moss::Robot *r1{new moss::Robot("img/spr_robots.png", 3, 5, {0.0f, 0.0f}, 69, {0.0f, 0.0f})};
+
     Vector2 coordBase{-1414.0f, 0.0f};
     while (!WindowShouldClose()){
         ClearBackground(BLACK);
         BeginDrawing();
             BeginMode2D(cam->getCam());
                 base->retractAnimation(coordBase, WHITE);
-                mapa->draw();
+                mapa->drawMapFloor();
+                r1->update();
+                mapa->drawComponents();
                 mapa->update(cam->getMouseWorld(), hud->getSelected());
             EndMode2D();
             hud->draw(cam->getMouse(), mapa->getEditMode());

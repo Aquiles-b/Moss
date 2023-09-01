@@ -51,14 +51,25 @@ void moss::Map::mapToMatrixCoord(const float& x, const float& y, int& l, int& c)
     c = floor((x * 0.5f + y) / this->heightCellIso);
 }
 
-void moss::Map::draw() const{
+void moss::Map::drawMapFloor() const{
     Vector2 coordIso{0};
     DrawTexture(this->textures[static_cast<int>(IdTextureMap::MAPISO)], this->coordMap.x, this->coordMap.y, WHITE);
     if (this->editMode)
         DrawTexture(this->textures[static_cast<int>(IdTextureMap::GRIDISO)], this->coordMap.x, this->coordMap.y, WHITE);
     for (unsigned short i = 0; i < this->size; ++i){
         for (unsigned short j = 0; j < this->size; ++j){
-            if (this->mapData[i][j].value > -1){
+            if (this->mapData[i][j].value == 0){
+                matrixToMapCoord(i, j, coordIso);
+                this->components[this->mapData[i][j].value]->update(coordIso, WHITE);
+            }
+        }
+    }
+}
+void moss::Map::drawComponents() const{
+    Vector2 coordIso{0};
+    for (unsigned short i = 0; i < this->size; ++i){
+        for (unsigned short j = 0; j < this->size; ++j){
+            if (this->mapData[i][j].value > 0){
                 matrixToMapCoord(i, j, coordIso);
                 this->components[this->mapData[i][j].value]->update(coordIso, WHITE);
             }

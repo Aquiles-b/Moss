@@ -9,17 +9,21 @@ class Animation{
         Animation(const std::string& spr, const int& frames, const int& speed);
         Animation(const std::string& spr, const int& frames, const int& speed,
                   const Vector2& offset);
+        Animation(const std::string& spr, const int& frames, const int& speed,
+                  const Vector2& offset, const int& frameHeight);
         virtual ~Animation();
 
         const Texture2D& getImg() const;
         const Vector2& getOffset() const;
 
         void linearAnimation(Vector2 coord, const Color& c);
+        void linearAnimationHeight(Vector2 coord, const int& heightIndex, const Color& c);
         void retractAnimation(Vector2 coord, const Color& c);
     private:
         Texture2D img;
         Rectangle frameRec;
         int frameWidth;
+        int frameHeight;
         int frameIndex;
         int maxFrames;
         int delay;
