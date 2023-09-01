@@ -1,7 +1,8 @@
 #include "../headers/Hud.hpp"
 
 moss::Hud::Hud(const std::string& editModeComps, const std::string& hammer)
-    : editModeComps{LoadTexture(editModeComps.c_str())}, hammer{LoadTexture(hammer.c_str())}{
+    : editModeComps{LoadTexture(editModeComps.c_str())}, hammer{LoadTexture(hammer.c_str())},
+    selected{0}{
 }
 
 moss::Hud::~Hud(){
