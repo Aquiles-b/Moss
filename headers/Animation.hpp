@@ -15,6 +15,7 @@ class Animation{
         const Vector2& getOffset() const;
 
         void linearAnimation(Vector2 coord, const Color& c);
+        void retractAnimation(Vector2 coord, const Color& c);
     private:
         Texture2D img;
         Rectangle frameRec;
@@ -22,6 +23,7 @@ class Animation{
         int frameIndex;
         int maxFrames;
         int delay;
+        short direction;
         int speed;
         Vector2 offset;
 };

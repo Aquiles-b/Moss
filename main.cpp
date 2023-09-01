@@ -28,7 +28,7 @@ int main(void){
     components.push_back(bus);
     components.push_back(ram);
     components.push_back(cpu);
-    moss::Animation *base{new moss::Animation{"img/spr_baseIso.png", 4, 15, {0.0f, 0.0f}}};
+    moss::Animation *base{new moss::Animation{"img/spr_baseIso.png", 4, 8, {0.0f, 0.0f}}};
     moss::Map *mapa{new moss::Map{texturesMap, components, 83.3f, 118.0f}};
     moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 700.0f}}};
     moss::Hud *hud{new moss::Hud{"img/hudEditMode.png", "img/hammer.png"}};
@@ -38,7 +38,7 @@ int main(void){
         ClearBackground(BLACK);
         BeginDrawing();
             BeginMode2D(cam->getCam());
-                base->linearAnimation(coordBase, WHITE);
+                base->retractAnimation(coordBase, WHITE);
                 mapa->draw();
                 mapa->update(cam->getMouseWorld(), hud->getSelected());
             EndMode2D();
@@ -47,11 +47,13 @@ int main(void){
         EndDrawing();
         cam->update();
     }
-    mapa->imprimeMapData();
     delete cam;
     delete base;
     delete mapa;
     delete hud;
+    delete bus;
+    delete ram;
+    delete cpu;
     CloseWindow();
 
     return 0;
