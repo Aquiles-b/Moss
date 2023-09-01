@@ -12,26 +12,25 @@ void moss::Hud::draw(const Vector2& mouse, const bool& editMode) const{
     int posiRec{0};
     if (editMode){
         switch (this->selected){
-            case 0:
-                posiRec = 0;
-                break;
-            case 1:
-                posiRec = 80;
-                break;
-            case 2:
-                posiRec = 163;
-                break;
-            case -1: 
-                posiRec = 245;
-                DrawTextureV(this->hammer, {mouse.x - 10, mouse.y - 10}, WHITE);
-                break;
+        case 0:
+            posiRec = 0;
+            break;
+        case 1:
+            posiRec = 80;
+            break;
+        case 2:
+            posiRec = 163;
+            break;
+        case -1: 
+            posiRec = 245;
+            DrawTextureV(this->hammer, {mouse.x - 10, mouse.y - 10}, WHITE);
+            break;
         }
         DrawRectangle(posiRec, 0, 80, 80, WHITE);
         DrawTextureV(this->editModeComps, {0.0f, 0.0f}, WHITE);
     }
 }
-
-void moss::Hud::update(const Vector2& mouse){
+void moss::Hud::updateSelected(const Vector2& mouse){
     if (IsKeyPressed(KEY_ONE))
         this->selected = 0;
     else if (IsKeyPressed(KEY_TWO))
@@ -40,11 +39,15 @@ void moss::Hud::update(const Vector2& mouse){
         this->selected = 2;
     else if (IsKeyPressed(KEY_FOUR))
         this->selected = -1;
-
     this->selected = mouseChoose(mouse);
 }
 
-int moss::Hud::mouseChoose(const Vector2& mouse) const{
+void moss::Hud::update(const Vector2& mouse, const bool& editMode){
+    if (editMode)
+        updateSelected(mouse);
+}
+
+int moss::Hud::mouseChoose(const Vector2& mouse){
     if (mouse.y > 80.0f)
         return this->selected;
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){

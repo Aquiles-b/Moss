@@ -24,7 +24,7 @@ int main(void){
     std::vector<moss::Component*> components;
     moss::Floor *bus{new moss::Floor{"img/busIso.png"}};
     moss::Component *ram{new moss::Component{"img/ramIso.png", 1, {0.0f, 0.0f}, 1, 4, 2, {-235.0f, -161.0f}}};
-    moss::Component *cpu{new moss::Component{"img/cpuIso.png", 1, {0.0f, 0.0f}, 1, 3, 3, {-200.0f, -205.0f}}};
+    moss::Component *cpu{new moss::Component{"img/cpuIso.png", 1, {0.0f, 0.0f}, 1, 4, 4, {-200.0f, -205.0f}}};
     components.push_back(bus);
     components.push_back(ram);
     components.push_back(cpu);
@@ -33,7 +33,6 @@ int main(void){
     moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 700.0f}}};
     moss::Hud *hud{new moss::Hud{"img/hudEditMode.png", "img/hammer.png"}};
 
-    int comp{0};
     Vector2 coordBase{-1414.0f, 0.0f};
     while (!WindowShouldClose()){
         ClearBackground(BLACK);
@@ -44,8 +43,7 @@ int main(void){
                 mapa->update(cam->getMouseWorld(), hud->getSelected());
             EndMode2D();
             hud->draw(cam->getMouse(), mapa->getEditMode());
-            hud->update(cam->getMouse());
-            cam->showMouseInfo(false);
+            hud->update(cam->getMouse(), mapa->getEditMode());
         EndDrawing();
         cam->update();
     }

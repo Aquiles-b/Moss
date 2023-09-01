@@ -12,14 +12,15 @@ class Hud{
         const int getSelected() const;
 
         void draw(const Vector2& mouse, const bool& editMode) const;
-        void update(const Vector2& mouse);
+        void update(const Vector2& mouse, const bool& editMode);
         
     private:
         Texture2D editModeComps;
         Texture2D hammer;
         int selected;
 
-        int mouseChoose(const Vector2& mouse) const;
+        void updateSelected(const Vector2& mouse);
+        int mouseChoose(const Vector2& mouse);
 };
 }
 #endif
