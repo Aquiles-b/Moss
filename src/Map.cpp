@@ -47,7 +47,7 @@ void moss::Map::matrixToMapCoord(const int& l, const int& c, Vector2& coordIso) 
 }
 
 void moss::Map::mapToMatrixCoord(const float& x, const float& y, int& l, int& c) const{
-    l = floor(abs((x * 0.5f - y) / this->heightCellIso));
+    l = -ceil((x * 0.5f - y) / this->heightCellIso);
     c = floor((x * 0.5f + y) / this->heightCellIso);
 }
 
@@ -140,7 +140,7 @@ void moss::Map::update(const Vector2& mouse, const int& comp){
     if (IsKeyPressed(KEY_E))
         this->editMode = !this->editMode;
     if (this->editMode) {
-        if (l < this->size && c >= 0 && c < this->size){
+        if (l >=0 && l < this->size && c >= 0 && c < this->size){
             if (comp == -1)
                 destructionMode(l, c);
             else if (!tryDrawInMatrix(this->components[comp], l, c, coordIso))
