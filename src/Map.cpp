@@ -51,27 +51,27 @@ void moss::Map::mapToMatrixCoord(const float& x, const float& y, int& l, int& c)
     c = floor((x * 0.5f + y) / this->heightCellIso);
 }
 
-void moss::Map::drawMapFloor() const{
+void moss::Map::drawMapBefore() const{
     Vector2 coordIso{0};
     DrawTexture(this->textures[static_cast<int>(IdTextureMap::MAPISO)], this->coordMap.x, this->coordMap.y, WHITE);
     if (this->editMode)
         DrawTexture(this->textures[static_cast<int>(IdTextureMap::GRIDISO)], this->coordMap.x, this->coordMap.y, WHITE);
     for (unsigned short i = 0; i < this->size; ++i){
         for (unsigned short j = 0; j < this->size; ++j){
-            if (this->mapData[i][j].value == 0){
+            if (this->mapData[i][j].value > -1){
                 matrixToMapCoord(i, j, coordIso);
-                this->components[this->mapData[i][j].value]->update(coordIso, WHITE);
+                this->components[this->mapData[i][j].value]->updateBefore(coordIso, WHITE);
             }
         }
     }
 }
-void moss::Map::drawComponents() const{
+void moss::Map::drawMapAfter() const{
     Vector2 coordIso{0};
     for (unsigned short i = 0; i < this->size; ++i){
         for (unsigned short j = 0; j < this->size; ++j){
-            if (this->mapData[i][j].value > 0){
+            if (this->mapData[i][j].value > -1){
                 matrixToMapCoord(i, j, coordIso);
-                this->components[this->mapData[i][j].value]->update(coordIso, WHITE);
+                this->components[this->mapData[i][j].value]->updateAfter(coordIso, WHITE);
             }
         }
     }
@@ -94,7 +94,7 @@ bool moss::Map::tryDrawInMatrix(Component* component, const int& l, const int& c
     heightComp = component->getHeight();
     if(!isComponentInsideLimits(l, c, widthComp, heightComp) || colision(l, c, widthComp, heightComp))
         return false;
-    component->update(coordIso, WHITE);
+    component->updateBefore(coordIso, WHITE);
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
         fillColisionMatrix(l, c, widthComp, heightComp, -2, l, c);
         this->mapData[l][c].value = component->getId();
@@ -137,7 +137,7 @@ void moss::Map::destructionMode(int l, int c){
     matrixToMapCoord(l, c, coordIso);
     widthComp = this->components[compIndex.value]->getWidth();
     heightComp = this->components[compIndex.value]->getHeight();
-    this->components[compIndex.value]->update(coordIso, RED);
+    this->components[compIndex.value]->updateBefore(coordIso, RED);
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         fillColisionMatrix(l, c, widthComp, heightComp, -1, -1, -1);
 }
@@ -155,7 +155,7 @@ void moss::Map::update(const Vector2& mouse, const int& comp){
             if (comp == -1)
                 destructionMode(l, c);
             else if (!tryDrawInMatrix(this->components[comp], l, c, coordIso))
-                this->components[comp]->update(coordIso, RED);
+                this->components[comp]->updateBefore(coordIso, RED);
         }
     }
 }

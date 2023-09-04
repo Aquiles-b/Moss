@@ -67,3 +67,6 @@ const Texture2D& Animation::getImg() const{
 const Vector2& Animation::getOffset() const{
     return this->offset;
 }
+void Animation::setOffset(const Vector2& offset){
+    this->offset = offset;
+}

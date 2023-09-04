@@ -7,7 +7,9 @@ Floor::Floor(const std::string& img)
 
 Floor::~Floor(){}
 
-void Floor::update(Vector2& coord, const Color& c){
+void Floor::updateBefore(Vector2& coord, const Color& c){
     coord.x += this->getSprite()->getOffset().x;
     DrawTextureV(this->getImg(), coord, c);
 }
+
+void Floor::updateAfter(Vector2& coord, const Color& c){}

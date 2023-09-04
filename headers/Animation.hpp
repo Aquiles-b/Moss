@@ -15,6 +15,7 @@ class Animation{
 
         const Texture2D& getImg() const;
         const Vector2& getOffset() const;
+        void setOffset(const Vector2& offset);
 
         void linearAnimation(Vector2 coord, const Color& c);
         void linearAnimationHeight(Vector2 coord, const int& heightIndex, const Color& c);

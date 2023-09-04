@@ -24,8 +24,8 @@ int main(void){
 
     std::vector<moss::Component*> components;
     moss::Floor *bus{new moss::Floor{"img/busIso.png"}};
-    moss::Component *ram{new moss::Component{"img/ramIso.png", 1, {0.0f, 0.0f}, 1, 4, 2, {-235.0f, -161.0f}}};
-    moss::Component *cpu{new moss::Component{"img/cpuIso.png", 1, {0.0f, 0.0f}, 1, 4, 4, {-200.0f, -205.0f}}};
+    moss::Component *ram{new moss::Component{"img/ramIsoAF.png", "img/ramIsoBF.png", 1, {0.0f, 0.0f}, 1, 4, 2, {-235.0f, -161.0f}}};
+    moss::Component *cpu{new moss::Component{"img/cpuIsoAF.png", "img/cpuIsoBF.png", 1, {0.0f, 0.0f}, 1, 4, 4, {-200.0f, -205.0f}}};
     components.push_back(bus);
     components.push_back(ram);
     components.push_back(cpu);
@@ -42,9 +42,9 @@ int main(void){
         BeginDrawing();
             BeginMode2D(cam->getCam());
                 base->retractAnimation(coordBase, WHITE);
-                mapa->drawMapFloor();
+                mapa->drawMapBefore();
                 r1->update();
-                mapa->drawComponents();
+                mapa->drawMapAfter();
                 mapa->update(cam->getMouseWorld(), hud->getSelected());
             EndMode2D();
             hud->draw(cam->getMouse(), mapa->getEditMode());

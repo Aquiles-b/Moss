@@ -7,7 +7,8 @@ class Floor : public Component{
         Floor(const std::string& img);
         virtual ~Floor();
 
-        void update(Vector2& coord, const Color& c) override;
+        void updateBefore(Vector2& coord, const Color& c) override;
+        void updateAfter(Vector2& coord, const Color& c) override;
     private:
 };
 }
