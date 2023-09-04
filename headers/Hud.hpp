@@ -2,7 +2,7 @@
 #define HUD_HPP
 #include <iostream>
 #include <vector>
-#include "Component.hpp"
+#include "../include/raylib.h"
 namespace moss{
 class Hud{
     public:

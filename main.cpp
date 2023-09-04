@@ -2,8 +2,7 @@
 #include <string>
 #include <iostream>
 #include "headers/Camera.hpp"
-#include "headers/Component.hpp"
-#include "headers/Floor.hpp"
+#include "headers/ComponentModel.hpp"
 #include "headers/Map.hpp"
 #include "headers/IdTextureMap.hpp"
 #include "headers/Hud.hpp"
@@ -22,16 +21,16 @@ int main(void){
     InitWindow(width, height, "Moss");
     SetTargetFPS(75);
 
-    std::vector<moss::Component*> components;
-    moss::Floor *bus{new moss::Floor{"img/busIso.png"}};
-    moss::Component *ram{new moss::Component{"img/ramIsoAF.png", "img/ramIsoBF.png", 1, {0.0f, 0.0f}, 1, 4, 2, {-235.0f, -161.0f}}};
-    moss::Component *cpu{new moss::Component{"img/cpuIsoAF.png", "img/cpuIsoBF.png", 1, {0.0f, 0.0f}, 1, 4, 4, {-200.0f, -205.0f}}};
+    std::vector<moss::ComponentModel*> components;
+    moss::ComponentModel *bus{new moss::ComponentModel{"img/busIso.png", 1, 1, 1, 1, true}};
+    moss::ComponentModel *ram{new moss::ComponentModel{"img/ramIsoBF.png", "img/ramIsoAF.png", 1, 1, 4, 2, {-235.0f, -161.0f}, false}};
+    moss::ComponentModel *cpu{new moss::ComponentModel{"img/cpuIsoBF.png", "img/cpuIsoAF.png", 1, 1, 4, 4, {-200.0f, -205.0f}, false}};
     components.push_back(bus);
     components.push_back(ram);
     components.push_back(cpu);
     moss::Animation *base{new moss::Animation{"img/spr_baseIso.png", 4, 8, {0.0f, 0.0f}}};
     moss::Map *mapa{new moss::Map{texturesMap, components, 83.3f, 118.0f}};
-    moss::Camera *cam{new moss::Camera{width, height, 40, (Vector2){0.0f, 700.0f}}};
+    moss::Camera *cam{new moss::Camera{width, height, 40, {0.0f, 700.0f}}};
     moss::Hud *hud{new moss::Hud{"img/hudEditMode.png", "img/hammer.png"}};
 
     moss::Robot *r1{new moss::Robot("img/spr_robots.png", 3, 5, {0.0f, 0.0f}, 69, {0.0f, 0.0f})};
@@ -52,6 +51,7 @@ int main(void){
         EndDrawing();
         cam->update();
     }
+    mapa->imprimeMapData();
     delete cam;
     delete base;
     delete mapa;

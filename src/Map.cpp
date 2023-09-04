@@ -1,8 +1,6 @@
 #include "../headers/Map.hpp"
-#include "../headers/IdTextureMap.hpp"
 
-
-moss::Map::Map(const std::array<std::string, 4>& textures, const std::vector<Component*>& components,
+moss::Map::Map(const std::array<std::string, 4>& textures, const std::vector<ComponentModel*>& components,
                 const float& widthCellTop, const float& widthCellIso)
     :editMode{false}{
     for (short i = 0; i < textures.size(); ++i)
@@ -21,6 +19,7 @@ moss::Map::Map(const std::array<std::string, 4>& textures, const std::vector<Com
             this->mapData[i][j].value = -1;
             this->mapData[i][j].lOrigin = -1;
             this->mapData[i][j].cOrigin = -1;
+            this->mapData[i][j].constInfo = nullptr;
         }
     }
 }
@@ -28,8 +27,13 @@ moss::Map::Map(const std::array<std::string, 4>& textures, const std::vector<Com
 moss::Map::~Map(){
     for (int i = 0; i < this->textures.size(); ++i)
         UnloadTexture(this->textures[i]);
-    for (int i = 0; i < this->size; ++i)
+    for (int i = 0; i < this->size; ++i){
+        for (int j = 0; j < this->size; ++j){
+            if (this->mapData[i][j].constInfo != nullptr)
+                delete this->mapData[i][j].constInfo;
+        }
         delete[] this->mapData[i];
+    }
     delete[] this->mapData;
 }
  
@@ -88,16 +92,17 @@ void moss::Map::fillColisionMatrix(const int& l, const int& c, const int& widthC
     }
 }
 
-bool moss::Map::tryDrawInMatrix(Component* component, const int& l, const int& c, Vector2& coordIso){
-    int widthComp{0}, heightComp{0};
-    widthComp = component->getWidth();
-    heightComp = component->getHeight();
+bool moss::Map::tryDrawInMatrix(ComponentModel* component, const int& l, const int& c, Vector2& coordIso){
+    int widthComp{component->getWidth()};
+    int heightComp{component->getHeight()};
     if(!isComponentInsideLimits(l, c, widthComp, heightComp) || colision(l, c, widthComp, heightComp))
         return false;
     component->updateBefore(coordIso, WHITE);
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
         fillColisionMatrix(l, c, widthComp, heightComp, -2, l, c);
         this->mapData[l][c].value = component->getId();
+        if (!component->getIsTile())
+            this->mapData[l][c].constInfo = new Construction;
     }
     return true;
 }
@@ -138,8 +143,13 @@ void moss::Map::destructionMode(int l, int c){
     widthComp = this->components[compIndex.value]->getWidth();
     heightComp = this->components[compIndex.value]->getHeight();
     this->components[compIndex.value]->updateBefore(coordIso, RED);
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+        if (compIndex.constInfo != nullptr){
+            delete compIndex.constInfo;
+            compIndex.constInfo = nullptr;
+        }
         fillColisionMatrix(l, c, widthComp, heightComp, -1, -1, -1);
+    }
 }
 
 void moss::Map::update(const Vector2& mouse, const int& comp){

@@ -3,20 +3,23 @@
 #include <iostream>
 #include <array>
 #include <vector>
+#include "../headers/IdTextureMap.hpp"
 #include "../include/raylib.h"
 #include "../include/raymath.h"
-#include "Component.hpp"
+#include "ComponentModel.hpp"
+#include "Construction.hpp"
 
 namespace moss{
 struct cellMatrix{
     int value;
     int lOrigin;
     int cOrigin;
+    moss::Construction *constInfo;
 };
 class Map{
     public:
         Map();
-        Map(const std::array<std::string, 4>& textures, const std::vector<Component*>& components,
+        Map(const std::array<std::string, 4>& textures, const std::vector<ComponentModel*>& components,
                 const float& widthCellTop, const float& widthCellIso);
         virtual ~Map();
 
@@ -32,14 +35,14 @@ class Map{
         bool isComponentInsideLimits(const int& l, const int& c, const int& width, const int& height) const;
     private:
         std::array<Texture2D, 4> textures;
-        std::vector<Component*> components;
+        std::vector<ComponentModel*> components;
         unsigned short heightCellIso;
         Vector2 coordMap;
         bool editMode;
         unsigned short size;
         struct cellMatrix **mapData;
 
-        bool tryDrawInMatrix(Component* component, const int& l, const int& c, Vector2& coordIso);
+        bool tryDrawInMatrix(ComponentModel* component, const int& l, const int& c, Vector2& coordIso);
         void destructionMode(int l, int c);
         void fillColisionMatrix(const int& l, const int& c, const int& widthComp, const int& heightComp,
                                 const int& numFill, const int& lOrigin, const int& cOrigin);
