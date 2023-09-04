@@ -2,7 +2,7 @@
 
 moss::Map::Map(const std::array<std::string, 4>& textures, const std::vector<ComponentModel*>& components,
                 const float& widthCellTop, const float& widthCellIso)
-    :editMode{false}{
+    :editMode{false}, construCoords{new std::vector<struct cellMatrix>}{
     for (short i = 0; i < textures.size(); ++i)
         this->textures[i] = LoadTexture(textures[i].c_str());
     this->components = components;
@@ -35,6 +35,7 @@ moss::Map::~Map(){
         delete[] this->mapData[i];
     }
     delete[] this->mapData;
+    delete this->construCoords;
 }
  
 void moss::Map::imprimeMapData() const{
@@ -57,6 +58,8 @@ void moss::Map::mapToMatrixCoord(const float& x, const float& y, int& l, int& c)
 
 void moss::Map::drawMapBefore() const{
     Vector2 coordIso{0};
+    struct cellMatrix aux{0};
+    this->construCoords->clear();
     DrawTexture(this->textures[static_cast<int>(IdTextureMap::MAPISO)], this->coordMap.x, this->coordMap.y, WHITE);
     if (this->editMode)
         DrawTexture(this->textures[static_cast<int>(IdTextureMap::GRIDISO)], this->coordMap.x, this->coordMap.y, WHITE);
@@ -64,20 +67,19 @@ void moss::Map::drawMapBefore() const{
         for (unsigned short j = 0; j < this->size; ++j){
             if (this->mapData[i][j].value > -1){
                 matrixToMapCoord(i, j, coordIso);
-                this->components[this->mapData[i][j].value]->updateBefore(coordIso, WHITE);
+                aux = this->mapData[i][j];
+                this->components[aux.value]->updateBefore(coordIso, WHITE);
+                this->construCoords->push_back(aux);
             }
         }
     }
 }
 void moss::Map::drawMapAfter() const{
     Vector2 coordIso{0};
-    for (unsigned short i = 0; i < this->size; ++i){
-        for (unsigned short j = 0; j < this->size; ++j){
-            if (this->mapData[i][j].value > -1){
-                matrixToMapCoord(i, j, coordIso);
-                this->components[this->mapData[i][j].value]->updateAfter(coordIso, WHITE);
-            }
-        }
+    std::vector<struct cellMatrix>::iterator it = this->construCoords->begin();
+    for ( ; it != this->construCoords->end(); ++it){
+        matrixToMapCoord(it->lOrigin, it->cOrigin, coordIso);
+        this->components[it->value]->updateAfter(coordIso, WHITE);
     }
 }
 

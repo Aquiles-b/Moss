@@ -36,6 +36,7 @@ class Map{
     private:
         std::array<Texture2D, 4> textures;
         std::vector<ComponentModel*> components;
+        std::vector<struct cellMatrix> *construCoords;
         unsigned short heightCellIso;
         Vector2 coordMap;
         bool editMode;
