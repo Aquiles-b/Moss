@@ -43,11 +43,11 @@ int main(void){
         BeginDrawing();
             BeginMode2D(cam->getCam());
                 base->retractAnimation(coordBase, WHITE);
-                mapa->drawMapBefore(hud->getEditMode());
+                mapa->drawMapBefore(hud->getEditMode(), *gc);
                 gc->updatePaths(mapa->getMapData(), mapa->getConstruCoords());
                 r1->update();
-                mapa->drawMapAfter();
-                mapa->update(cam->getMouseWorld(), hud->getSelected(), hud->getEditMode());
+                mapa->drawMapAfter(*gc);
+                mapa->update(cam->getMouseWorld(), hud->getSelected(), hud->getEditMode(), *gc);
             EndMode2D();
             hud->draw(cam->getMouse());
             hud->update(cam->getMouse());

@@ -48,17 +48,7 @@ void moss::Map::imprimeMapData() const{
     }
 }
 
-void moss::Map::matrixToMapCoord(const int& l, const int& c, Vector2& coordIso) const{
-    coordIso.x = (c - l) * this->heightCellIso;
-    coordIso.y = (c + l) * this->heightCellIso / 2.0f;
-}
-
-void moss::Map::mapToMatrixCoord(const float& x, const float& y, int& l, int& c) const{
-    l = -ceil((x * 0.5f - y) / this->heightCellIso);
-    c = floor((x * 0.5f + y) / this->heightCellIso);
-}
-
-void moss::Map::drawMapBefore(const bool& editMode) const{
+void moss::Map::drawMapBefore(const bool& editMode, const moss::GameController& gc) const{
     Vector2 coordIso{0};
     struct cellMatrix aux{0};
     this->construCoords->clear();
@@ -68,7 +58,7 @@ void moss::Map::drawMapBefore(const bool& editMode) const{
     for (unsigned short i = 0; i < this->size; ++i){
         for (unsigned short j = 0; j < this->size; ++j){
             if (this->mapData[i][j].value > -1){
-                matrixToMapCoord(i, j, coordIso);
+                gc.matrixToMapCoord(i, j, coordIso);
                 aux = this->mapData[i][j];
                 if (this->components[aux.value]->getIsTile()){
                     this->components[aux.value]->updateBefore(coordIso, WHITE);
@@ -84,11 +74,11 @@ void moss::Map::drawMapBefore(const bool& editMode) const{
         }
     }
 }
-void moss::Map::drawMapAfter() const{
+void moss::Map::drawMapAfter(const moss::GameController& gc) const{
     Vector2 coordIso{0};
     std::vector<struct cellMatrix>::iterator it = this->construCoords->begin();
     for ( ; it != this->construCoords->end(); ++it){
-        matrixToMapCoord(it->lOrigin, it->cOrigin, coordIso);
+        gc.matrixToMapCoord(it->lOrigin, it->cOrigin, coordIso);
         this->components[it->value]->updateAfter(coordIso, it->constInfo->getColor());
     }
 }
@@ -143,18 +133,18 @@ bool moss::Map::colision(const int& l, const int& c, const int& width, const int
     return false;
 }
 
-void moss::Map::destructionMode(int l, int c){
+void moss::Map::destructionMode(int l, int c, const moss::GameController& gc){
     Vector2 coordIso{0};
     struct cellMatrix compIndex{this->mapData[l][c]};
     int widthComp{0}, heightComp{0};
     if (compIndex.value == -1)
         return;
-    if (compIndex.value == -2){
+    if (compIndex.value <= -2){
         l = compIndex.lOrigin;
         c = compIndex.cOrigin;
         compIndex = this->mapData[l][c];
     }
-    matrixToMapCoord(l, c, coordIso);
+    gc.matrixToMapCoord(l, c, coordIso);
     widthComp = this->components[compIndex.value]->getWidth();
     heightComp = this->components[compIndex.value]->getHeight();
     this->components[compIndex.value]->updateBefore(coordIso, RED);
@@ -167,16 +157,16 @@ void moss::Map::destructionMode(int l, int c){
     }
 }
 
-void moss::Map::update(const Vector2& mouse, const int& comp, const bool& editMode){
+void moss::Map::update(const Vector2& mouse, const int& comp, const bool& editMode, 
+        const moss::GameController& gc){
     Vector2 coordIso{0};
     int l{0}, c{0};
-    mapToMatrixCoord(mouse.x, mouse.y, l, c);
-    matrixToMapCoord(l, c, coordIso);
-
+    gc.mapToMatrixCoord(mouse.x, mouse.y, l, c);
+    gc.matrixToMapCoord(l, c, coordIso);
     if (editMode) {
         if (l >=0 && l < this->size && c >= 0 && c < this->size){
             if (comp == -1)
-                destructionMode(l, c);
+                destructionMode(l, c, gc);
             else if (!tryDrawInMatrix(this->components[comp], l, c, coordIso))
                 this->components[comp]->updateBefore(coordIso, RED);
         }

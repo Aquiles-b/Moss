@@ -7,15 +7,10 @@
 #include "../include/raylib.h"
 #include "../include/raymath.h"
 #include "ComponentModel.hpp"
-#include "Construction.hpp"
+#include "GameController.hpp"
+#include "cellMatrix.hpp"
 
 namespace moss{
-struct cellMatrix{
-    int value;
-    int lOrigin;
-    int cOrigin;
-    moss::Construction *constInfo;
-};
 class Map{
     public:
         Map();
@@ -30,11 +25,10 @@ class Map{
         const int& getHeightCellIso() const;
 
         void imprimeMapData() const;
-        void update(const Vector2& mouse, const int& comp, const bool& editMode);
-        void drawMapBefore(const bool& editMode) const;
-        void drawMapAfter() const;
-        void matrixToMapCoord(const int& l, const int& c, Vector2& coordIso) const;
-        void mapToMatrixCoord(const float& x, const float& y, int& l, int& c) const;
+        void update(const Vector2& mouse, const int& comp, const bool& editMode,
+                const moss::GameController& gc);
+        void drawMapBefore(const bool& editMode, const moss::GameController& gc) const;
+        void drawMapAfter(const moss::GameController& gc) const;
         bool colision(const int& l, const int& c, const int& width, const int& height) const;
         bool isComponentInsideLimits(const int& l, const int& c, const int& width, const int& height) const;
     private:
@@ -47,7 +41,7 @@ class Map{
         struct cellMatrix **mapData;
 
         bool tryDrawInMatrix(ComponentModel* component, const int& l, const int& c, Vector2& coordIso);
-        void destructionMode(int l, int c);
+        void destructionMode(int l, int c, const moss::GameController& gc);
         void fillColisionMatrix(const int& l, const int& c, const int& widthComp, const int& heightComp,
                                 const int& numFill, const int& lOrigin, const int& cOrigin);
 };
