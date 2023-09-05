@@ -1,6 +1,7 @@
 #ifndef CONSTRUCTION_HPP
 #define CONSTRUCTION_HPP
 #include <cstdint>
+#include <iostream>
 #include "../include/raylib.h"
 namespace moss{
 struct paths{
@@ -16,7 +17,7 @@ class Construction{
         void setIsConnected(const bool& isConnected);;
         const int getRobots() const;
         void setRobots(const int& robots);
-        const struct paths *getPaths() const;
+        struct paths *getPaths() const;
         void setPaths(struct paths *paths, const int& numPaths);
         const Color& getColor() const;
         void setColor(const Color& color);

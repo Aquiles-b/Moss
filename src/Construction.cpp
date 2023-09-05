@@ -3,7 +3,7 @@
 using namespace moss;
 
 moss::Construction::Construction(const int& lDoor, const int& cDoor)
-    :robots{5}, isConnected{false}, paths{new struct paths[4]}, numPaths{4}, color{GRAY},
+    :robots{1}, isConnected{false}, paths{new struct paths[4]}, numPaths{4}, color{GRAY},
     cDoor{cDoor}, lDoor{lDoor}{
     for (int i = 0; i < this->numPaths; ++i)
         this->paths[i].coords = new Vector2[128];
@@ -30,15 +30,17 @@ void moss::Construction::setRobots(const int& robots){
     this->robots = robots;
 }
 
-const struct paths *moss::Construction::getPaths() const{
+struct paths *moss::Construction::getPaths() const{
     return this->paths;
 }
 
 void moss::Construction::setPaths(struct paths *paths, const int& numPaths){
     for (int i = 0; i < numPaths; ++i){
         this->paths[i].tam = paths[i].tam;
-        for (int j = 0; j < paths[i].tam; ++j)
-            this->paths[i].coords[j] = paths[i].coords[j];
+        for (int j = 0; j < paths[i].tam; ++j){
+            this->paths[i].coords[j].x = paths[i].coords[j].x;
+            this->paths[i].coords[j].y = paths[i].coords[j].y;
+        }
     }
 }
 

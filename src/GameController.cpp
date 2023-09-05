@@ -35,7 +35,6 @@ void moss::GameController::updatePaths(struct cellMatrix **mtx,
         lDoor = it->lOrigin - it->constInfo->getLDoor();
         cDoor = it->cOrigin - it->constInfo->getCDoor();
         this->footPrint[lDoor][cDoor] = 1;
-        addCoordPath(lDoor, cDoor, pathIndex, numCoord);
         findPath(lDoor, cDoor, mtx, pathIndex, numCoord, direction);
         if (pathIndex > 0){
             it->constInfo->setPaths(this->paths, pathIndex);
@@ -44,7 +43,8 @@ void moss::GameController::updatePaths(struct cellMatrix **mtx,
         else {
             it->constInfo->setIsConnected(false);
         }
-        numCoord = pathIndex = 0;
+        numCoord = 0;
+        pathIndex = 0;
     }
 }
 
@@ -63,34 +63,35 @@ void moss::GameController::findPath(const int& l, const int& c, struct cellMatri
                     this->paths[pathIndex].coords[i].y = this->paths[pathIndex-1].coords[i].y;
                 }
             }
+            --numCoord;
             return;
         }
     }
     this->footPrint[l][c] = 1;
     if (isInsideLimit(l+1, c) && isAllowedWalk(l+1, c, mtx)){
         if (direction != 0){
-            addCoordPath(l+1, c, pathIndex, numCoord);
+            addCoordPath(l, c, pathIndex, numCoord);
             direction = 0;
         }
         findPath(l+1, c, mtx, pathIndex, numCoord, direction);
     }
     if (isInsideLimit(l, c+1) && isAllowedWalk(l, c+1, mtx)){
         if (direction != 1){
-            addCoordPath(l, c+1, pathIndex, numCoord);
+            addCoordPath(l, c, pathIndex, numCoord);
             direction = 1;
         }
         findPath(l, c+1, mtx, pathIndex, numCoord, direction);
     }
     if (isInsideLimit(l-1, c) && isAllowedWalk(l-1, c, mtx)){
         if (direction != 2){
-            addCoordPath(l-1, c, pathIndex, numCoord);
+            addCoordPath(l, c, pathIndex, numCoord);
             direction = 2;
         }
         findPath(l-1, c, mtx, pathIndex, numCoord, direction);
     }
     if (isInsideLimit(l, c-1) && isAllowedWalk(l, c-1, mtx)){
         if (direction != 3){
-            addCoordPath(l, c-1, pathIndex, numCoord);
+            addCoordPath(l, c, pathIndex, numCoord);
             direction = 3;
         }
         findPath(l, c-1, mtx, pathIndex, numCoord, direction);

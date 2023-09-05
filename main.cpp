@@ -5,6 +5,7 @@
 #include "headers/ComponentModel.hpp"
 #include "headers/GameController.hpp"
 #include "headers/Map.hpp"
+#include "headers/RobotsController.hpp"
 #include "headers/IdTextureMap.hpp"
 #include "headers/Hud.hpp"
 #include "headers/Animation.hpp"
@@ -34,8 +35,7 @@ int main(void){
     moss::Camera *cam{new moss::Camera{width, height, 40, {0.0f, 700.0f}}};
     moss::Hud *hud{new moss::Hud{"img/hudEditMode.png", "img/hammer.png"}};
     moss::GameController *gc{new moss::GameController{bus->getId(), mapa->getHeightCellIso(), mapa->getSize()}};
-
-    moss::Robot *r1{new moss::Robot("img/spr_robots.png", 3, 5, {0.0f, 0.0f}, 69, {0.0f, 0.0f})};
+    moss::RobotsController *rc{new moss::RobotsController(10)};
 
     Vector2 coordBase{-1414.0f, 0.0f};
     while (!WindowShouldClose()){
@@ -46,18 +46,20 @@ int main(void){
                 mapa->drawMapBefore(hud->getEditMode(), *gc);
                 if (mapa->getChanged())
                     gc->updatePaths(mapa->getMapData(), mapa->getConstruCoords());
-                r1->update();
+                rc->updateRobots(mapa->getConstruCoords());
                 mapa->drawMapAfter(*gc);
                 mapa->update(cam->getMouseWorld(), hud->getSelected(), hud->getEditMode(), *gc);
             EndMode2D();
             hud->draw(cam->getMouse());
             hud->update(cam->getMouse());
+            cam->showMouseInfo(true);
         EndDrawing();
         cam->update();
     }
     delete cam;
     delete base;
     delete mapa;
+    delete rc;
     delete hud;
     delete gc;
     delete bus;

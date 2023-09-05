@@ -74,6 +74,7 @@ void moss::Map::drawMapBefore(const bool& editMode, const moss::GameController& 
         }
     }
 }
+
 void moss::Map::drawMapAfter(const moss::GameController& gc) const{
     Vector2 coordIso{0};
     std::vector<struct cellMatrix>::iterator it = this->construCoords->begin();

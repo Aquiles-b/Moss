@@ -11,6 +11,8 @@ class Animation{
                   const Vector2& offset);
         Animation(const std::string& spr, const int& frames, const int& speed,
                   const Vector2& offset, const int& frameHeight);
+        Animation(const Texture2D& spr, const int& frames, const int& speed,
+                  const Vector2& offset, const int& frameHeight);
         virtual ~Animation();
 
         const Texture2D& getImg() const;
