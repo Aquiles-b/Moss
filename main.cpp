@@ -43,15 +43,14 @@ int main(void){
         BeginDrawing();
             BeginMode2D(cam->getCam());
                 base->retractAnimation(coordBase, WHITE);
-                mapa->drawMapBefore();
+                mapa->drawMapBefore(hud->getEditMode());
                 gc->updatePaths(mapa->getMapData(), mapa->getConstruCoords());
                 r1->update();
                 mapa->drawMapAfter();
-                mapa->update(cam->getMouseWorld(), hud->getSelected());
+                mapa->update(cam->getMouseWorld(), hud->getSelected(), hud->getEditMode());
             EndMode2D();
-            cam->showMouseInfo(true);
-            hud->draw(cam->getMouse(), mapa->getEditMode());
-            hud->update(cam->getMouse(), mapa->getEditMode());
+            hud->draw(cam->getMouse());
+            hud->update(cam->getMouse());
         EndDrawing();
         cam->update();
     }
@@ -60,6 +59,7 @@ int main(void){
     delete base;
     delete mapa;
     delete hud;
+    delete gc;
     delete bus;
     delete ram;
     delete cpu;

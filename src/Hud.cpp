@@ -2,16 +2,16 @@
 
 moss::Hud::Hud(const std::string& editModeComps, const std::string& hammer)
     : editModeComps{LoadTexture(editModeComps.c_str())}, hammer{LoadTexture(hammer.c_str())},
-    selected{0}{
+    selected{0}, editMode{false}{
 }
 
 moss::Hud::~Hud(){
     UnloadTexture(this->editModeComps);
 }
 
-void moss::Hud::draw(const Vector2& mouse, const bool& editMode) const{
+void moss::Hud::draw(const Vector2& mouse) const{
     int posiRec{0};
-    if (editMode){
+    if (this->editMode){
         switch (this->selected){
         case 0:
             posiRec = 0;
@@ -43,8 +43,10 @@ void moss::Hud::updateSelected(const Vector2& mouse){
     this->selected = mouseChoose(mouse);
 }
 
-void moss::Hud::update(const Vector2& mouse, const bool& editMode){
-    if (editMode)
+void moss::Hud::update(const Vector2& mouse){
+    if (IsKeyPressed(KEY_E))
+        this->editMode = !this->editMode;
+    if (this->editMode)
         updateSelected(mouse);
 }
 
@@ -69,3 +71,8 @@ int moss::Hud::mouseChoose(const Vector2& mouse){
 const int moss::Hud::getSelected() const{
     return this->selected;
 }
+
+    const bool& moss::Hud::getEditMode() const{
+    return this->editMode;
+}
+

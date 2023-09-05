@@ -4,7 +4,7 @@ using namespace moss;
 
 moss::Map::Map(const std::array<std::string, 4>& textures, const std::vector<ComponentModel*>& components,
                 const float& widthCellTop, const float& widthCellIso)
-    :editMode{false}, construCoords{new std::vector<struct cellMatrix>}{
+    :construCoords{new std::vector<struct cellMatrix>}{
     for (short i = 0; i < textures.size(); ++i)
         this->textures[i] = LoadTexture(textures[i].c_str());
     this->components = components;
@@ -58,12 +58,12 @@ void moss::Map::mapToMatrixCoord(const float& x, const float& y, int& l, int& c)
     c = floor((x * 0.5f + y) / this->heightCellIso);
 }
 
-void moss::Map::drawMapBefore() const{
+void moss::Map::drawMapBefore(const bool& editMode) const{
     Vector2 coordIso{0};
     struct cellMatrix aux{0};
     this->construCoords->clear();
     DrawTexture(this->textures[static_cast<int>(IdTextureMap::MAPISO)], this->coordMap.x, this->coordMap.y, WHITE);
-    if (this->editMode)
+    if (editMode)
         DrawTexture(this->textures[static_cast<int>(IdTextureMap::GRIDISO)], this->coordMap.x, this->coordMap.y, WHITE);
     for (unsigned short i = 0; i < this->size; ++i){
         for (unsigned short j = 0; j < this->size; ++j){
@@ -167,15 +167,13 @@ void moss::Map::destructionMode(int l, int c){
     }
 }
 
-void moss::Map::update(const Vector2& mouse, const int& comp){
+void moss::Map::update(const Vector2& mouse, const int& comp, const bool& editMode){
     Vector2 coordIso{0};
     int l{0}, c{0};
     mapToMatrixCoord(mouse.x, mouse.y, l, c);
     matrixToMapCoord(l, c, coordIso);
 
-    if (IsKeyPressed(KEY_E))
-        this->editMode = !this->editMode;
-    if (this->editMode) {
+    if (editMode) {
         if (l >=0 && l < this->size && c >= 0 && c < this->size){
             if (comp == -1)
                 destructionMode(l, c);
@@ -183,10 +181,6 @@ void moss::Map::update(const Vector2& mouse, const int& comp){
                 this->components[comp]->updateBefore(coordIso, RED);
         }
     }
-}
-
-const bool& moss::Map::getEditMode() const{
-    return this->editMode;
 }
 
 const int& moss::Map::getHeightCellIso() const{

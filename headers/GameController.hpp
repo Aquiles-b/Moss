@@ -11,6 +11,9 @@ class GameController{
         GameController(const int64_t& floorId, const int& heightCellIso, const int& size);
         virtual ~GameController();
 
+        const bool& getIsChanged() const;
+        void setIsChanged(const bool& isChanged);
+
         void updatePaths(struct cellMatrix **mtx, std::vector<struct cellMatrix> *construCoords);
         void mapToMatrixCoord(const float& x, const float& y, int& l, int& c) const;
         void matrixToMapCoord(const int& l, const int& c, Vector2& coordIso) const;
@@ -27,6 +30,7 @@ class GameController{
         short **footPrint;
         int size;
         int numPaths;
+        bool isChanged;
 };
 }
 #endif

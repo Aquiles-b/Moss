@@ -30,8 +30,8 @@ class Map{
         const int& getHeightCellIso() const;
 
         void imprimeMapData() const;
-        void update(const Vector2& mouse, const int& floor);
-        void drawMapBefore() const;
+        void update(const Vector2& mouse, const int& comp, const bool& editMode);
+        void drawMapBefore(const bool& editMode) const;
         void drawMapAfter() const;
         void matrixToMapCoord(const int& l, const int& c, Vector2& coordIso) const;
         void mapToMatrixCoord(const float& x, const float& y, int& l, int& c) const;
@@ -43,7 +43,6 @@ class Map{
         std::vector<struct cellMatrix> *construCoords;
         int heightCellIso;
         Vector2 coordMap;
-        bool editMode;
         int size;
         struct cellMatrix **mapData;
 

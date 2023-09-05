@@ -113,3 +113,11 @@ bool moss::GameController::isAllowedWalk(const int& l, const int& c, struct cell
         return true;
     return false;
 }
+
+const bool& moss::GameController::getIsChanged() const{
+    return this->isChanged;
+}
+
+void moss::GameController::setIsChanged(const bool& isChanged){
+    this->isChanged = isChanged;
+}
