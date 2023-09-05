@@ -24,8 +24,8 @@ int main(void){
 
     std::vector<moss::ComponentModel*> components;
     moss::ComponentModel *bus{new moss::ComponentModel{"img/busIso.png", 1, 1, 1, 1, true}};
-    moss::ComponentModel *ram{new moss::ComponentModel{"img/ramIsoBF.png", "img/ramIsoAF.png", 1, 1, 4, 2, {-235.0f, -161.0f}, false}};
-    moss::ComponentModel *cpu{new moss::ComponentModel{"img/cpuIsoBF.png", "img/cpuIsoAF.png", 1, 1, 3, 3, {-200.0f, -205.0f}, false}};
+    moss::ComponentModel *ram{new moss::ComponentModel{"img/ramIsoBF.png", "img/ramIsoAF.png", 1, 1, 4, 2, {-235.0f, -161.0f}, false, 2, 0}};
+    moss::ComponentModel *cpu{new moss::ComponentModel{"img/cpuIsoBF.png", "img/cpuIsoAF.png", 1, 1, 3, 3, {-200.0f, -205.0f}, false, 0, 2}};
     components.push_back(bus);
     components.push_back(ram);
     components.push_back(cpu);

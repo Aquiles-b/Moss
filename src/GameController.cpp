@@ -25,14 +25,14 @@ void moss::GameController::updatePaths(struct cellMatrix **mtx,
                             std::vector<struct cellMatrix> *construCoords){
     std::vector<struct cellMatrix>::iterator it = construCoords->begin();
     int pathIndex{0}, numCoord{0};
+    int cDoor{0}, lDoor{0};
     for ( ; it != construCoords->end(); ++it){
-        for (int i = 0; i < this->size; ++i){
-            for (int j = 0; j < this->size; ++j)
-                this->footPrint[i][j] = 0;
-        }
-        if(findPath(it->lOrigin, it->cOrigin, mtx, pathIndex, numCoord)){
-            for (int i = 0; i < this->paths[0].tam; ++i)
-                std::cerr << this->paths[0].coords[i].x << "-" << this->paths[0].coords[i].y << std::endl;
+        clearFootPrint();
+        lDoor = it->lOrigin - it->constInfo->getLDoor();
+        cDoor = it->cOrigin - it->constInfo->getCDoor();
+        this->footPrint[lDoor][cDoor] = 1;
+        addCoordPath(lDoor, cDoor, pathIndex, numCoord);
+        if(findPath(lDoor, cDoor, mtx, pathIndex, numCoord)){
             it->constInfo->setPaths(this->paths, pathIndex);
             it->constInfo->setIsConnected(true);
         }
@@ -47,7 +47,6 @@ bool moss::GameController::findPath(const int& l, const int& c, struct cellMatri
                                     int& pathIndex, int& numCoord){
     Vector2 coordIso{0};
     bool resul{false};
-    std::cerr << l << " " << c << std::endl;
     if (pathIndex == this->numPaths)
         return true;
     if (isInsideLimit(l, c) && isAllowedWalk(l, c, mtx)){
@@ -58,6 +57,7 @@ bool moss::GameController::findPath(const int& l, const int& c, struct cellMatri
             return true;
         }
     }
+    this->footPrint[l][c] = 1;
     if (isInsideLimit(l+1, c) && isAllowedWalk(l+1, c, mtx)){
         addCoordPath(l+1, c, pathIndex, numCoord);
         resul = findPath(l+1, c, mtx, pathIndex, numCoord);
@@ -74,15 +74,21 @@ bool moss::GameController::findPath(const int& l, const int& c, struct cellMatri
         addCoordPath(l, c-1, pathIndex, numCoord);
         resul = findPath(l, c-1, mtx, pathIndex, numCoord);
     }
-    numCoord = 0;
+    --numCoord;
     return resul;
+}
+
+void moss::GameController::clearFootPrint(){
+    for (int i = 0; i < this->size; ++i){
+        for (int j = 0; j < this->size; ++j)
+            this->footPrint[i][j] = 0;
+    }
 }
 
 void moss::GameController::addCoordPath(const int& l, const int& c, const int& pathIndex, int& numCoord){
     Vector2 coordIso{0};
     matrixToMapCoord(l, c, coordIso);
     this->paths[pathIndex].coords[numCoord] = coordIso;
-    this->footPrint[l][c] = 1;
     ++numCoord;
 }
 
@@ -103,7 +109,7 @@ bool moss::GameController::isInsideLimit(const int& l, const int& c) const{
 }
 
 bool moss::GameController::isAllowedWalk(const int& l, const int& c, struct cellMatrix **mtx) const{
-    if (mtx[l][c].value == -3 || mtx[l][c].value == this->floorId && this->footPrint[l][c] == 0)
+    if ((mtx[l][c].value == -3 || mtx[l][c].value == this->floorId) && this->footPrint[l][c] == 0)
         return true;
     return false;
 }

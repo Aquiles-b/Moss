@@ -7,7 +7,8 @@ class ComponentModel{
     public:
         ComponentModel();
         ComponentModel(const std::string& imgAf, const std::string& imgBf, const int& frames, const int& speed,
-                  const int& width, const int& height, const Vector2& offset, const bool& isTile);
+                  const int& width, const int& height, const Vector2& offset, const bool& isTile, const int& lDoor,
+                  const int& cDoor);
         ComponentModel(const std::string& img, const std::string& imgBf, const int& frames, const int& speed,
                   const int& width, const int& height, const bool& isTile);
         ComponentModel(const std::string& img, const int& frames, const int& speed, const int& width,
@@ -24,8 +25,12 @@ class ComponentModel{
         void setSpriteBf(moss::Animation *spriteBf);
         moss::Animation *getSpriteAf() const;
         void setSpriteAf(moss::Animation *spriteAf);
-        const bool getIsTile() const;
+        const bool& getIsTile() const;
         void setIsTile(const bool& isTile);
+        const int& getCDoor() const;
+        void setCDoor(const int& cDoor);
+        const int& getLDoor() const;
+        void setLDoor(const int& lDoor);
 
         virtual void updateAfter(Vector2& coord, const Color& c);
         virtual void updateBefore(Vector2& coord, const Color& c);
@@ -36,6 +41,8 @@ class ComponentModel{
         moss::Animation *spriteAf;
         int width;
         int height;
+        int lDoor;
+        int cDoor;
         bool isTile;
 };
 }

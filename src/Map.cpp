@@ -70,9 +70,16 @@ void moss::Map::drawMapBefore() const{
             if (this->mapData[i][j].value > -1){
                 matrixToMapCoord(i, j, coordIso);
                 aux = this->mapData[i][j];
-                this->components[aux.value]->updateBefore(coordIso, WHITE);
-                if (!this->components[aux.value]->getIsTile())
+                if (this->components[aux.value]->getIsTile()){
+                    this->components[aux.value]->updateBefore(coordIso, WHITE);
+                } else {
                     this->construCoords->push_back(aux);
+                    if (aux.constInfo->getIsConnected())
+                        aux.constInfo->setColor(WHITE);
+                    else
+                        aux.constInfo->setColor(GRAY);
+                    this->components[aux.value]->updateBefore(coordIso, aux.constInfo->getColor());
+                }
             }
         }
     }
@@ -82,7 +89,7 @@ void moss::Map::drawMapAfter() const{
     std::vector<struct cellMatrix>::iterator it = this->construCoords->begin();
     for ( ; it != this->construCoords->end(); ++it){
         matrixToMapCoord(it->lOrigin, it->cOrigin, coordIso);
-        this->components[it->value]->updateAfter(coordIso, WHITE);
+        this->components[it->value]->updateAfter(coordIso, it->constInfo->getColor());
     }
 }
 
@@ -100,6 +107,7 @@ void moss::Map::fillColisionMatrix(const int& l, const int& c, const int& widthC
 bool moss::Map::tryDrawInMatrix(ComponentModel* component, const int& l, const int& c, Vector2& coordIso){
     int widthComp{component->getWidth()};
     int heightComp{component->getHeight()};
+    int lDoor{component->getLDoor()}, cDoor{component->getCDoor()};
     if(!isComponentInsideLimits(l, c, widthComp, heightComp) || colision(l, c, widthComp, heightComp))
         return false;
     component->updateBefore(coordIso, WHITE);
@@ -107,8 +115,8 @@ bool moss::Map::tryDrawInMatrix(ComponentModel* component, const int& l, const i
         fillColisionMatrix(l, c, widthComp, heightComp, -2, l, c);
         this->mapData[l][c].value = component->getId();
         if (!component->getIsTile()){
-            this->mapData[l][c].constInfo = new Construction();
-            this->mapData[l][c-2].value = -3;
+            this->mapData[l][c].constInfo = new Construction(lDoor, cDoor);
+            this->mapData[l-lDoor][c-cDoor].value = -3;
         }
     }
     return true;

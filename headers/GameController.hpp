@@ -22,6 +22,7 @@ class GameController{
         bool isInsideLimit(const int& l, const int& c) const;
         bool isAllowedWalk(const int& l, const int& c, struct cellMatrix **mtx) const;
         void addCoordPath(const int& l, const int& c, const int& pathIndex, int& numCoord);
+        void clearFootPrint();
         struct paths *paths;
         short **footPrint;
         int size;

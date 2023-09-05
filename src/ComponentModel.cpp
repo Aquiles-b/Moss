@@ -9,7 +9,7 @@ ComponentModel::ComponentModel(){}
 ComponentModel::ComponentModel(const std::string& img, const int& frames, const int& speed, const int& width,
                 const int& height, const bool& isTile)
     :spriteBf{new Animation{img, frames, speed}}, spriteAf{nullptr},
-    id{ComponentModel::nextId}, width{width}, height{height}, isTile{isTile}{
+    id{ComponentModel::nextId}, width{width}, height{height}, isTile{isTile}, lDoor{0}, cDoor{0}{
     ComponentModel::nextId++;
 }
 
@@ -20,10 +20,12 @@ ComponentModel::ComponentModel(const std::string& imgBf, const std::string& imgA
 }
 
 ComponentModel::ComponentModel(const std::string& imgBf, const std::string& imgAf, const int& frames, const int& speed,
-          const int& width, const int& height, const Vector2& offset, const bool& isTile)
+          const int& width, const int& height, const Vector2& offset, const bool& isTile, const int& lDoor, const int& cDoor)
     :ComponentModel{imgBf, imgAf, frames, speed, width, height, isTile}{ 
         this->spriteBf->setOffset(offset);
         this->spriteAf->setOffset(offset);
+        this->cDoor = cDoor;
+        this->lDoor = lDoor;
 }
 
 ComponentModel::~ComponentModel(){
@@ -80,10 +82,26 @@ void ComponentModel::setSpriteAf(moss::Animation *spriteAf){
     this->spriteAf = spriteAf;
 }
 
-const bool ComponentModel::getIsTile() const{
+const bool& ComponentModel::getIsTile() const{
     return this->isTile;
 }
 
 void ComponentModel::setIsTile(const bool& isTile){
     this->isTile = isTile;
+}
+
+const int& ComponentModel::getCDoor() const{
+    return this->cDoor;
+}
+
+void ComponentModel::setCDoor(const int& cDoor){
+    this->cDoor = cDoor;
+}
+
+const int& ComponentModel::getLDoor() const{
+    return this->lDoor;
+}
+
+void ComponentModel::setLDoor(const int& lDoor){
+    this->lDoor = lDoor;
 }
