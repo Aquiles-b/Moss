@@ -1,5 +1,7 @@
 #include "../headers/Map.hpp"
 
+using namespace moss;
+
 moss::Map::Map(const std::array<std::string, 4>& textures, const std::vector<ComponentModel*>& components,
                 const float& widthCellTop, const float& widthCellIso)
     :editMode{false}, construCoords{new std::vector<struct cellMatrix>}{
@@ -8,7 +10,7 @@ moss::Map::Map(const std::array<std::string, 4>& textures, const std::vector<Com
     this->components = components;
 
     this->size = floor(this->textures[static_cast<int>(IdTextureMap::MAPTOP)].width / widthCellTop);
-    this->heightCellIso = widthCellIso / 2.0f;
+    this->heightCellIso = ceil(widthCellIso / 2.0f);
     coordMap.x = -this->textures[static_cast<int>(IdTextureMap::MAPISO)].width / 2.0f;
     coordMap.y = 0.0f;
 
@@ -69,7 +71,8 @@ void moss::Map::drawMapBefore() const{
                 matrixToMapCoord(i, j, coordIso);
                 aux = this->mapData[i][j];
                 this->components[aux.value]->updateBefore(coordIso, WHITE);
-                this->construCoords->push_back(aux);
+                if (!this->components[aux.value]->getIsTile())
+                    this->construCoords->push_back(aux);
             }
         }
     }
@@ -103,8 +106,10 @@ bool moss::Map::tryDrawInMatrix(ComponentModel* component, const int& l, const i
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
         fillColisionMatrix(l, c, widthComp, heightComp, -2, l, c);
         this->mapData[l][c].value = component->getId();
-        if (!component->getIsTile())
-            this->mapData[l][c].constInfo = new Construction;
+        if (!component->getIsTile()){
+            this->mapData[l][c].constInfo = new Construction();
+            this->mapData[l][c-2].value = -3;
+        }
     }
     return true;
 }
@@ -172,6 +177,22 @@ void moss::Map::update(const Vector2& mouse, const int& comp){
     }
 }
 
-const bool moss::Map::getEditMode() const{
+const bool& moss::Map::getEditMode() const{
     return this->editMode;
+}
+
+const int& moss::Map::getHeightCellIso() const{
+    return this->heightCellIso;
+}
+
+const int& moss::Map::getSize() const{
+    return this->size;
+}
+
+struct cellMatrix **Map::getMapData(){
+    return this->mapData;
+}
+
+std::vector<struct cellMatrix> *moss::Map::getConstruCoords(){
+    return this->construCoords;
 }

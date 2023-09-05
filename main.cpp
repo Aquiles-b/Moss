@@ -3,6 +3,7 @@
 #include <iostream>
 #include "headers/Camera.hpp"
 #include "headers/ComponentModel.hpp"
+#include "headers/GameController.hpp"
 #include "headers/Map.hpp"
 #include "headers/IdTextureMap.hpp"
 #include "headers/Hud.hpp"
@@ -24,7 +25,7 @@ int main(void){
     std::vector<moss::ComponentModel*> components;
     moss::ComponentModel *bus{new moss::ComponentModel{"img/busIso.png", 1, 1, 1, 1, true}};
     moss::ComponentModel *ram{new moss::ComponentModel{"img/ramIsoBF.png", "img/ramIsoAF.png", 1, 1, 4, 2, {-235.0f, -161.0f}, false}};
-    moss::ComponentModel *cpu{new moss::ComponentModel{"img/cpuIsoBF.png", "img/cpuIsoAF.png", 1, 1, 4, 4, {-200.0f, -205.0f}, false}};
+    moss::ComponentModel *cpu{new moss::ComponentModel{"img/cpuIsoBF.png", "img/cpuIsoAF.png", 1, 1, 3, 3, {-200.0f, -205.0f}, false}};
     components.push_back(bus);
     components.push_back(ram);
     components.push_back(cpu);
@@ -32,6 +33,7 @@ int main(void){
     moss::Map *mapa{new moss::Map{texturesMap, components, 83.3f, 118.0f}};
     moss::Camera *cam{new moss::Camera{width, height, 40, {0.0f, 700.0f}}};
     moss::Hud *hud{new moss::Hud{"img/hudEditMode.png", "img/hammer.png"}};
+    moss::GameController *gc{new moss::GameController{bus->getId(), mapa->getHeightCellIso(), mapa->getSize()}};
 
     moss::Robot *r1{new moss::Robot("img/spr_robots.png", 3, 5, {0.0f, 0.0f}, 69, {0.0f, 0.0f})};
 
@@ -42,10 +44,12 @@ int main(void){
             BeginMode2D(cam->getCam());
                 base->retractAnimation(coordBase, WHITE);
                 mapa->drawMapBefore();
+                gc->updatePaths(mapa->getMapData(), mapa->getConstruCoords());
                 r1->update();
                 mapa->drawMapAfter();
                 mapa->update(cam->getMouseWorld(), hud->getSelected());
             EndMode2D();
+            cam->showMouseInfo(true);
             hud->draw(cam->getMouse(), mapa->getEditMode());
             hud->update(cam->getMouse(), mapa->getEditMode());
         EndDrawing();

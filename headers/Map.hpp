@@ -23,7 +23,11 @@ class Map{
                 const float& widthCellTop, const float& widthCellIso);
         virtual ~Map();
 
-        const bool getEditMode() const;
+        const bool& getEditMode() const;
+        const int& getSize() const;
+        struct cellMatrix **getMapData();
+        std::vector<struct cellMatrix> *getConstruCoords();
+        const int& getHeightCellIso() const;
 
         void imprimeMapData() const;
         void update(const Vector2& mouse, const int& floor);
@@ -37,10 +41,10 @@ class Map{
         std::array<Texture2D, 4> textures;
         std::vector<ComponentModel*> components;
         std::vector<struct cellMatrix> *construCoords;
-        unsigned short heightCellIso;
+        int heightCellIso;
         Vector2 coordMap;
         bool editMode;
-        unsigned short size;
+        int size;
         struct cellMatrix **mapData;
 
         bool tryDrawInMatrix(ComponentModel* component, const int& l, const int& c, Vector2& coordIso);

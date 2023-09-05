@@ -1,19 +1,27 @@
 #include "../headers/Construction.hpp"
 
+using namespace moss;
+
 moss::Construction::Construction()
-    :robots{5}, isConnected{false}, path{new std::vector<std::vector<Vector2>>}{
+    :robots{5}, isConnected{false}, paths{new struct paths[4]}{
+    for (int i = 0; i < this->numPaths; ++i)
+        this->paths[i].coords = new Vector2[128];
 }
 
 moss::Construction::~Construction(){
-    delete path;
+    for (int i = 0; i < this->numPaths; ++i)
+        delete[] paths[i].coords;
+    delete[] paths;
 }
 
 const bool moss::Construction::getIsConnected() const{
     return this->isConnected;
 }
+
 void moss::Construction::setIsConnected(const bool& isConnected){
     this->isConnected = isConnected;
 }
+
 const int moss::Construction::getRobots() const{
     return this->robots;
 }
@@ -21,9 +29,14 @@ void moss::Construction::setRobots(const int& robots){
     this->robots = robots;
 }
 
-Vector2 **moss::Construction::getPath() const{
-    return this->path;
+const struct paths *moss::Construction::getPaths() const{
+    return this->paths;
 }
-void moss::Construction::setPath(Vector2 **path){
-    this->path = path;
+
+void moss::Construction::setPaths(struct paths *paths, const int& numPaths){
+    for (int i = 0; i < numPaths; ++i){
+        this->paths[i].tam = paths[i].tam;
+        for (int j = 0; j < paths[i].tam; ++j)
+            this->paths[i].coords[j] = paths[i].coords[j];
+    }
 }

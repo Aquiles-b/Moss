@@ -1,7 +1,7 @@
 # Forma dinamica linux
 D_FLAGS = -Wall -lraylib -lm -lpthread -ldl -lrt -lX11 
 nomePrograma = moss
-OBJS = src/Robot.o src/Hud.o src/Construction.o src/ComponentModel.o src/Animation.o src/Camera.o src/Map.o main.o
+OBJS = src/GameController.o src/Robot.o src/Hud.o src/Construction.o src/ComponentModel.o src/Animation.o src/Camera.o src/Map.o main.o
 
 all: $(nomePrograma)
 
@@ -41,6 +41,9 @@ Hud.o: src/Hud.cpp headers/Hud.hpp
 
 Robot.o: src/Robot.cpp headers/Robot.hpp
 	g++ -c src/Robot.cpp $(FLAGS)
+
+GameController.o: src/GameController.cpp headers/GameController.hpp
+	g++ -c src/GameController.cpp $(FLAGS)
 
 run: $(nomePrograma)
 	./$(nomePrograma)
