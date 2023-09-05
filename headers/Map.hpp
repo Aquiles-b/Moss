@@ -23,6 +23,8 @@ class Map{
         struct cellMatrix **getMapData();
         std::vector<struct cellMatrix> *getConstruCoords();
         const int& getHeightCellIso() const;
+        const bool& getChanged() const;
+        void setChanged(const bool& changed);
 
         void imprimeMapData() const;
         void update(const Vector2& mouse, const int& comp, const bool& editMode,
@@ -39,6 +41,7 @@ class Map{
         Vector2 coordMap;
         int size;
         struct cellMatrix **mapData;
+        bool changed;
 
         bool tryDrawInMatrix(ComponentModel* component, const int& l, const int& c, Vector2& coordIso);
         void destructionMode(int l, int c, const moss::GameController& gc);

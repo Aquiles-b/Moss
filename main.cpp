@@ -44,7 +44,8 @@ int main(void){
             BeginMode2D(cam->getCam());
                 base->retractAnimation(coordBase, WHITE);
                 mapa->drawMapBefore(hud->getEditMode(), *gc);
-                gc->updatePaths(mapa->getMapData(), mapa->getConstruCoords());
+                if (mapa->getChanged())
+                    gc->updatePaths(mapa->getMapData(), mapa->getConstruCoords());
                 r1->update();
                 mapa->drawMapAfter(*gc);
                 mapa->update(cam->getMouseWorld(), hud->getSelected(), hud->getEditMode(), *gc);
@@ -54,7 +55,6 @@ int main(void){
         EndDrawing();
         cam->update();
     }
-    mapa->imprimeMapData();
     delete cam;
     delete base;
     delete mapa;

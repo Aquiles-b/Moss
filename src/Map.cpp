@@ -102,6 +102,7 @@ bool moss::Map::tryDrawInMatrix(ComponentModel* component, const int& l, const i
         return false;
     component->updateBefore(coordIso, WHITE);
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)){
+        this->setChanged(true);
         fillColisionMatrix(l, c, widthComp, heightComp, -2, l, c);
         this->mapData[l][c].value = component->getId();
         if (!component->getIsTile()){
@@ -149,6 +150,7 @@ void moss::Map::destructionMode(int l, int c, const moss::GameController& gc){
     heightComp = this->components[compIndex.value]->getHeight();
     this->components[compIndex.value]->updateBefore(coordIso, RED);
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+        this->setChanged(true);
         if (compIndex.constInfo != nullptr){
             delete compIndex.constInfo;
             compIndex.constInfo = nullptr;
@@ -159,6 +161,7 @@ void moss::Map::destructionMode(int l, int c, const moss::GameController& gc){
 
 void moss::Map::update(const Vector2& mouse, const int& comp, const bool& editMode, 
         const moss::GameController& gc){
+    this->setChanged(false);
     Vector2 coordIso{0};
     int l{0}, c{0};
     gc.mapToMatrixCoord(mouse.x, mouse.y, l, c);
@@ -187,4 +190,12 @@ struct cellMatrix **Map::getMapData(){
 
 std::vector<struct cellMatrix> *moss::Map::getConstruCoords(){
     return this->construCoords;
+}
+
+const bool& moss::Map::getChanged() const{
+    return this->changed;
+}
+
+void moss::Map::setChanged(const bool& changed){
+    this->changed = changed;
 }

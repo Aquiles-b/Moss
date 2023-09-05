@@ -1,6 +1,7 @@
 #ifndef GAME_CONTROLLER_HPP
 #define GAME_CONTROLLER_HPP
 #include <cstdint>
+#include <iostream>
 #include <vector>
 #include "../include/raylib.h"
 #include "../include/raymath.h"
@@ -21,12 +22,13 @@ class GameController{
     private:
         int64_t floorId;
         int heightCellIso;
-        bool findPath(const int& l, const int& c, struct cellMatrix **mtx,
-                        int& pathIndex, int& numCoord);
+        void findPath(const int& l, const int& c, struct cellMatrix **mtx,
+                        int& pathIndex, int& numCoord, short direction);
         bool isInsideLimit(const int& l, const int& c) const;
         bool isAllowedWalk(const int& l, const int& c, struct cellMatrix **mtx) const;
         void addCoordPath(const int& l, const int& c, const int& pathIndex, int& numCoord);
         void clearFootPrint();
+        void clearPaths();
         struct paths *paths;
         short **footPrint;
         int size;

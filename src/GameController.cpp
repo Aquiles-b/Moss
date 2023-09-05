@@ -3,8 +3,10 @@
 moss::GameController::GameController(const int64_t& floorId, const int& heightCellIso, const int& size): floorId{floorId},
     numPaths{4}, paths{new struct paths[4]}, heightCellIso{heightCellIso}, footPrint{new short*[size]},
     size{size}{
-    for (int i = 0; i < this->numPaths; ++i)
+    for (int i = 0; i < this->numPaths; ++i){
         this->paths[i].coords = new Vector2[128];
+        this->paths[i].tam = 0;
+    }
     for (int i = 0; i < size; ++i){
         this->footPrint[i] = new short[size];
         for (int j = 0; j < size; ++j)
@@ -26,13 +28,16 @@ void moss::GameController::updatePaths(struct cellMatrix **mtx,
     std::vector<struct cellMatrix>::iterator it = construCoords->begin();
     int pathIndex{0}, numCoord{0};
     int cDoor{0}, lDoor{0};
+    short direction{-1};
     for ( ; it != construCoords->end(); ++it){
         clearFootPrint();
+        clearPaths();
         lDoor = it->lOrigin - it->constInfo->getLDoor();
         cDoor = it->cOrigin - it->constInfo->getCDoor();
         this->footPrint[lDoor][cDoor] = 1;
         addCoordPath(lDoor, cDoor, pathIndex, numCoord);
-        if(findPath(lDoor, cDoor, mtx, pathIndex, numCoord)){
+        findPath(lDoor, cDoor, mtx, pathIndex, numCoord, direction);
+        if (pathIndex > 0){
             it->constInfo->setPaths(this->paths, pathIndex);
             it->constInfo->setIsConnected(true);
         }
@@ -43,39 +48,54 @@ void moss::GameController::updatePaths(struct cellMatrix **mtx,
     }
 }
 
-bool moss::GameController::findPath(const int& l, const int& c, struct cellMatrix **mtx,
-                                    int& pathIndex, int& numCoord){
+void moss::GameController::findPath(const int& l, const int& c, struct cellMatrix **mtx,
+                                    int& pathIndex, int& numCoord, short direction){
     Vector2 coordIso{0};
     bool resul{false};
-    if (pathIndex == this->numPaths)
-        return true;
     if (isInsideLimit(l, c) && isAllowedWalk(l, c, mtx)){
         if (mtx[l][c].value == -3){
             addCoordPath(l, c, pathIndex, numCoord);
             this->paths[pathIndex].tam = numCoord;
             ++pathIndex;
-            return true;
+            if (pathIndex < this->numPaths){
+                for (int i = 0; i < numCoord; ++i){
+                    this->paths[pathIndex].coords[i].x = this->paths[pathIndex-1].coords[i].x;
+                    this->paths[pathIndex].coords[i].y = this->paths[pathIndex-1].coords[i].y;
+                }
+            }
+            return;
         }
     }
     this->footPrint[l][c] = 1;
     if (isInsideLimit(l+1, c) && isAllowedWalk(l+1, c, mtx)){
-        addCoordPath(l+1, c, pathIndex, numCoord);
-        resul = findPath(l+1, c, mtx, pathIndex, numCoord);
+        if (direction != 0){
+            addCoordPath(l+1, c, pathIndex, numCoord);
+            direction = 0;
+        }
+        findPath(l+1, c, mtx, pathIndex, numCoord, direction);
     }
     if (isInsideLimit(l, c+1) && isAllowedWalk(l, c+1, mtx)){
-        addCoordPath(l, c+1, pathIndex, numCoord);
-        resul = findPath(l, c+1, mtx, pathIndex, numCoord);
+        if (direction != 1){
+            addCoordPath(l, c+1, pathIndex, numCoord);
+            direction = 1;
+        }
+        findPath(l, c+1, mtx, pathIndex, numCoord, direction);
     }
     if (isInsideLimit(l-1, c) && isAllowedWalk(l-1, c, mtx)){
-        addCoordPath(l-1, c, pathIndex, numCoord);
-        resul = findPath(l-1, c, mtx, pathIndex, numCoord);
+        if (direction != 2){
+            addCoordPath(l-1, c, pathIndex, numCoord);
+            direction = 2;
+        }
+        findPath(l-1, c, mtx, pathIndex, numCoord, direction);
     }
     if (isInsideLimit(l, c-1) && isAllowedWalk(l, c-1, mtx)){
-        addCoordPath(l, c-1, pathIndex, numCoord);
-        resul = findPath(l, c-1, mtx, pathIndex, numCoord);
+        if (direction != 3){
+            addCoordPath(l, c-1, pathIndex, numCoord);
+            direction = 3;
+        }
+        findPath(l, c-1, mtx, pathIndex, numCoord, direction);
     }
     --numCoord;
-    return resul;
 }
 
 void moss::GameController::clearFootPrint(){
@@ -112,6 +132,11 @@ bool moss::GameController::isAllowedWalk(const int& l, const int& c, struct cell
     if ((mtx[l][c].value == -3 || mtx[l][c].value == this->floorId) && this->footPrint[l][c] == 0)
         return true;
     return false;
+}
+
+void moss::GameController::clearPaths(){
+    for (int i = 0; i < this->numPaths; ++i)
+        this->paths[i].tam = 0;
 }
 
 const bool& moss::GameController::getIsChanged() const{
