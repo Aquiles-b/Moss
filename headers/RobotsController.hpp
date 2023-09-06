@@ -1,5 +1,6 @@
 #ifndef ROBOTS_CONTROLLER_HPP
 #define ROBOTS_CONTROLLER_HPP
+#include "GameController.hpp"
 #include "Robot.hpp"
 #include "../include/raylib.h"
 #include "Construction.hpp"
@@ -8,13 +9,14 @@
 namespace moss{
 class RobotsController{
     public:
-        RobotsController(const int& maxRobots);
+        RobotsController(const std::string& spr, const int& maxRobots);
         virtual ~RobotsController();
 
-        void updateRobots(std::vector<struct cellMatrix> *constructions);
+        void updateRobots(std::vector<struct cellMatrix> *constructions, const moss::GameController& gc,
+                struct cellMatrix **mapData);
     private:
         std::vector<moss::Robot*> *robots;
-        Texture2D spr;
+        Texture2D *spr;
         int maxRobots;
 };
 }

@@ -1,5 +1,5 @@
 #include "../headers/Robot.hpp"
-moss::Robot::Robot(const std::string& spr, const int& frames, const int& speedAnimation,
+moss::Robot::Robot(Texture2D *spr, const int& frames, const int& speedAnimation,
           const Vector2& offset, const int& frameHeight, const Vector2& posi, const float& speed,
           Vector2 *path, const int& tamPath)
     :sprite{new moss::Animation{spr, frames, speedAnimation, offset, frameHeight}}, posi{posi},
@@ -17,19 +17,19 @@ moss::Robot::~Robot(){
 }
 
 void moss::Robot::update(){
+    chooseHeightIndex();
     this->sprite->linearAnimationHeight(this->posi, this->heightIndex, WHITE);
-    /* std::cerr << this->sprite->getImg().id << " (" << this->posi.x << ", " << this->posi.y << ")" << std::endl; */
-    if (this->posi.x != this->path[this->vertexIndex].x && 
-            this->posi.y != this->path[this->vertexIndex].y){
+    DrawCircleV(this->posi, 3.0f, RED);
+    if (abs(this->posi.x - this->path[this->vertexIndex].x) >= 2.5f && 
+            abs(this->posi.y - this->path[this->vertexIndex].y) >= 2.5f){
         this->posi.x += this->hsp * this->speed;
-        this->posi.y += this->vsp * this->speed;
+        this->posi.y += this->vsp * this->speed / 2.0f;
         return;
     } 
-    if (this->vertexIndex == this->tamPath){
+    if (this->vertexIndex == this->tamPath-1){
         this->reached = true;
         return;
     }
-    std::cerr << this->vertexIndex << std::endl;
     ++this->vertexIndex;
     if (this->posi.x > this->path[this->vertexIndex].x)
         this->hsp = -1;
@@ -41,6 +41,24 @@ void moss::Robot::update(){
         this->vsp = 1;
 }
 
+void moss::Robot::chooseHeightIndex(){
+    if (this->hsp < 0){
+        if (this->vsp < 0)
+            this->heightIndex = 2; 
+        else if (this->vsp > 0)
+            this-> heightIndex = 0;
+    } else if (this->hsp > 0){
+        if (this->vsp < 0)
+            this->heightIndex = 3; 
+        else if (this->vsp > 0)
+            this-> heightIndex = 1;
+    }
+}
+
 const bool& moss::Robot::getReached() const{
     return this->reached;
+}
+
+Vector2& moss::Robot::getPosi(){
+    return this->posi;
 }

@@ -25,6 +25,8 @@ class Construction{
         void setCDoor(const int& cDoor);
         const int& getLDoor() const;
         void setLDoor(const int& lDoor);
+
+        void increaseOneRobot();
     private:
         int robots;
         bool isConnected;

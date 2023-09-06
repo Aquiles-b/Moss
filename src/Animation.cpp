@@ -3,20 +3,21 @@
 using namespace moss;
 
 Animation::Animation(const std::string& spr, const int& frames, const int& speed)
-    : img{LoadTexture(spr.c_str())}, maxFrames{frames}, frameIndex{0},
-        delay{0}, speed{speed}, direction{1}{
-    this->frameWidth = this->img.width / frames;
-    this->frameRec = {0.0f, 0.0f, static_cast<float>(this->frameWidth), static_cast<float>(this->img.height)};
-    this->offset.x = -this->img.height;
+    : img{new Texture2D}, maxFrames{frames}, frameIndex{0},
+        delay{0}, speed{speed}, direction{1}, imgShared{false}{
+    *this->img = LoadTexture(spr.c_str());
+    this->frameWidth = this->img->width / frames;
+    this->frameRec = {0.0f, 0.0f, static_cast<float>(this->frameWidth), static_cast<float>(this->img->height)};
+    this->offset.x = -this->img->height;
     this->offset.y = 0.0f;
     this->frameHeight = 0;
 }
 
-Animation::Animation(const Texture2D& spr, const int& frames, const int& speed,
+Animation::Animation(Texture2D *spr, const int& frames, const int& speed,
           const Vector2& offset, const int& frameHeight)
-    : img{spr}, maxFrames{frames}, frameIndex{0}, delay{0}, speed{speed}, direction{1}{
-    this->frameWidth = this->img.width / frames;
-    this->frameRec = {0.0f, 0.0f, static_cast<float>(this->frameWidth), static_cast<float>(this->img.height)};
+    : img{spr}, maxFrames{frames}, frameIndex{0}, delay{0}, speed{speed}, direction{1}, imgShared{true}{
+    this->frameWidth = this->img->width / frames;
+    this->frameRec = {0.0f, 0.0f, static_cast<float>(this->frameWidth), static_cast<float>(this->img->height)};
     this->offset = offset;
     this->frameHeight = frameHeight;
     this->frameRec.height = frameHeight;
@@ -36,7 +37,10 @@ Animation::Animation(const std::string& spr, const int& frames, const int& speed
 }
 
 Animation::~Animation(){
-    UnloadTexture(this->img);
+    if (!this->imgShared){
+        UnloadTexture(*this->img);
+        delete this->img;
+    }
 }
 
 void Animation::linearAnimation(Vector2 coord, const Color& c){
@@ -53,7 +57,7 @@ void Animation::linearAnimationHeight(Vector2 coord, const int& heightIndex, con
         this->frameRec.x = this->frameWidth * this->frameIndex;
         this->delay = 0;
     }
-    DrawTextureRec(this->img, this->frameRec, coord, c);
+    DrawTextureRec(*this->img, this->frameRec, coord, c);
     this->delay++;
 }
 
@@ -67,12 +71,12 @@ void Animation::retractAnimation(Vector2 coord, const Color& c){
         if (this->frameIndex == this->maxFrames-1 || this->frameIndex == 0)
             this->direction = -this->direction;
     }
-    DrawTextureRec(this->img, this->frameRec, coord, c);
+    DrawTextureRec(*this->img, this->frameRec, coord, c);
     this->delay++;
 }
 
 const Texture2D& Animation::getImg() const{
-    return this->img;
+    return *this->img;
 }
 
 const Vector2& Animation::getOffset() const{

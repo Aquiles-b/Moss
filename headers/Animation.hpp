@@ -11,7 +11,7 @@ class Animation{
                   const Vector2& offset);
         Animation(const std::string& spr, const int& frames, const int& speed,
                   const Vector2& offset, const int& frameHeight);
-        Animation(const Texture2D& spr, const int& frames, const int& speed,
+        Animation(Texture2D *spr, const int& frames, const int& speed,
                   const Vector2& offset, const int& frameHeight);
         virtual ~Animation();
 
@@ -23,7 +23,8 @@ class Animation{
         void linearAnimationHeight(Vector2 coord, const int& heightIndex, const Color& c);
         void retractAnimation(Vector2 coord, const Color& c);
     private:
-        Texture2D img;
+        Texture2D *img;
+        bool imgShared;
         Rectangle frameRec;
         int frameWidth;
         int frameHeight;

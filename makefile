@@ -8,7 +8,7 @@ all: $(nomePrograma)
 sys = linux
 ifeq ($(sys), win)
 	#Estatica Windows
-	S_FLAGS = -Wall -Iinclude -LlibWin -static -static-libgcc -static-libstdc++ -lraylib -lopengl32 -lgdi32 -lwinmm
+	S_FLAGS = -Wall -Iinclude -LlibWin -static -static-libgcc -static-libstdc++ -lraylib -lopengl32 -lgdi32 -lwinmm -lm
 else
 	#Estatica Linux
 	S_FLAGS = -Wall -Llib -lraylib -lm -lpthread -ldl -lrt -lX11 

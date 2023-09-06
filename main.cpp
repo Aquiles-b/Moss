@@ -35,7 +35,7 @@ int main(void){
     moss::Camera *cam{new moss::Camera{width, height, 40, {0.0f, 700.0f}}};
     moss::Hud *hud{new moss::Hud{"img/hudEditMode.png", "img/hammer.png"}};
     moss::GameController *gc{new moss::GameController{bus->getId(), mapa->getHeightCellIso(), mapa->getSize()}};
-    moss::RobotsController *rc{new moss::RobotsController(10)};
+    moss::RobotsController *rc{new moss::RobotsController{"img/spr_robots.png", 10}};
 
     Vector2 coordBase{-1414.0f, 0.0f};
     while (!WindowShouldClose()){
@@ -46,7 +46,7 @@ int main(void){
                 mapa->drawMapBefore(hud->getEditMode(), *gc);
                 if (mapa->getChanged())
                     gc->updatePaths(mapa->getMapData(), mapa->getConstruCoords());
-                rc->updateRobots(mapa->getConstruCoords());
+                rc->updateRobots(mapa->getConstruCoords(), *gc, mapa->getMapData());
                 mapa->drawMapAfter(*gc);
                 mapa->update(cam->getMouseWorld(), hud->getSelected(), hud->getEditMode(), *gc);
             EndMode2D();
