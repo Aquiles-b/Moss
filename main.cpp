@@ -52,7 +52,6 @@ int main(void){
             EndMode2D();
             hud->draw(cam->getMouse());
             hud->update(cam->getMouse());
-            cam->showMouseInfo(true);
         EndDrawing();
         cam->update();
     }

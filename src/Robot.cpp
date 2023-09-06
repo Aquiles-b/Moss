@@ -12,15 +12,14 @@ moss::Robot::Robot(Texture2D *spr, const int& frames, const int& speedAnimation,
 }
 
 moss::Robot::~Robot(){
-    delete this->sprite;
     delete[] this->path;
 }
 
 void moss::Robot::update(){
     chooseHeightIndex();
     this->sprite->linearAnimationHeight(this->posi, this->heightIndex, WHITE);
-    if (abs(this->posi.x - this->path[this->vertexIndex].x) >= 2.5f && 
-            abs(this->posi.y - this->path[this->vertexIndex].y) >= 2.5f){
+    if (abs(this->posi.x - this->path[this->vertexIndex].x) >= 1.0f && 
+            abs(this->posi.y - this->path[this->vertexIndex].y) >= 1.0f){
         this->posi.x += this->hsp * this->speed;
         this->posi.y += this->vsp * this->speed / 2.0f;
         return;
