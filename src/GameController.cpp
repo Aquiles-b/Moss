@@ -32,6 +32,7 @@ void moss::GameController::updatePaths(struct cellMatrix **mtx,
     for ( ; it != construCoords->end(); ++it){
         clearFootPrint();
         clearPaths();
+        it->constInfo->clearPaths();
         lDoor = it->lOrigin - it->constInfo->getLDoor();
         cDoor = it->cOrigin - it->constInfo->getCDoor();
         this->footPrint[lDoor][cDoor] = 1;
@@ -50,8 +51,6 @@ void moss::GameController::updatePaths(struct cellMatrix **mtx,
 
 void moss::GameController::findPath(const int& l, const int& c, struct cellMatrix **mtx,
                                     int& pathIndex, int& numCoord, short direction){
-    Vector2 coordIso{0};
-    bool resul{false};
     if (isInsideLimit(l, c) && isAllowedWalk(l, c, mtx)){
         if (mtx[l][c].value == -3){
             addCoordPath(l, c, pathIndex, numCoord);
@@ -109,7 +108,8 @@ void moss::GameController::clearFootPrint(){
 void moss::GameController::addCoordPath(const int& l, const int& c, const int& pathIndex, int& numCoord){
     Vector2 coordIso{0};
     matrixToMapCoord(l, c, coordIso);
-    this->paths[pathIndex].coords[numCoord] = coordIso;
+    this->paths[pathIndex].coords[numCoord].x = coordIso.x;
+    this->paths[pathIndex].coords[numCoord].y = coordIso.y + this->heightCellIso/2.0f;
     ++numCoord;
 }
 

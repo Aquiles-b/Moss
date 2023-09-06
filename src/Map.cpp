@@ -128,7 +128,7 @@ bool moss::Map::colision(const int& l, const int& c, const int& width, const int
            aux = this->mapData[l-i][c-j].value;
             if (aux > -1)
                 return true;
-            else if (aux == -2)
+            if (aux <= -2)
                 return true;
         }
     }

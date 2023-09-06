@@ -22,6 +22,12 @@ class GameController{
     private:
         int64_t floorId;
         int heightCellIso;
+        struct paths *paths;
+        short **footPrint;
+        int size;
+        int numPaths;
+        bool isChanged;
+
         void findPath(const int& l, const int& c, struct cellMatrix **mtx,
                         int& pathIndex, int& numCoord, short direction);
         bool isInsideLimit(const int& l, const int& c) const;
@@ -29,11 +35,6 @@ class GameController{
         void addCoordPath(const int& l, const int& c, const int& pathIndex, int& numCoord);
         void clearFootPrint();
         void clearPaths();
-        struct paths *paths;
-        short **footPrint;
-        int size;
-        int numPaths;
-        bool isChanged;
 };
 }
 #endif

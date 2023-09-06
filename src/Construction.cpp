@@ -3,9 +3,9 @@
 using namespace moss;
 
 moss::Construction::Construction(const int& lDoor, const int& cDoor)
-    :robots{3}, isConnected{false}, paths{new struct paths[4]}, numPaths{4}, color{GRAY},
+    :robots{3}, isConnected{false}, paths{new struct paths[4]}, maxPaths{4}, numPaths{0}, color{GRAY},
     cDoor{cDoor}, lDoor{lDoor}{
-    for (int i = 0; i < this->numPaths; ++i)
+    for (int i = 0; i < this->maxPaths; ++i)
         this->paths[i].coords = new Vector2[128];
 }
 
@@ -34,7 +34,12 @@ struct paths *moss::Construction::getPaths() const{
     return this->paths;
 }
 
+struct paths moss::Construction::getRandomPath() const{
+    return this->paths[0];
+}
+
 void moss::Construction::setPaths(struct paths *paths, const int& numPaths){
+    this->numPaths = numPaths;
     for (int i = 0; i < numPaths; ++i){
         this->paths[i].tam = paths[i].tam;
         for (int j = 0; j < paths[i].tam; ++j){
@@ -46,6 +51,12 @@ void moss::Construction::setPaths(struct paths *paths, const int& numPaths){
 
 void moss::Construction::increaseOneRobot(){
     ++this->robots;
+}
+
+void moss::Construction::clearPaths(){
+    for (int i = 0; i < this->numPaths; ++i)
+        this->paths[i].tam = 0;
+    this->numPaths = 0;
 }
 
 const Color& moss::Construction::getColor() const{

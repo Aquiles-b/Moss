@@ -27,11 +27,14 @@ class Construction{
         void setLDoor(const int& lDoor);
 
         void increaseOneRobot();
+        struct paths getRandomPath() const;
+        void clearPaths();
     private:
         int robots;
         bool isConnected;
         struct paths *paths;
         int numPaths;
+        int maxPaths;
         Color color;
         int lDoor;
         int cDoor;

@@ -18,6 +18,8 @@ class RobotsController{
         std::vector<moss::Robot*> *robots;
         Texture2D *spr;
         int maxRobots;
+
+        void generateRobots(std::vector<struct cellMatrix> *constructions);
 };
 }
 #endif

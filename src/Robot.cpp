@@ -19,7 +19,6 @@ moss::Robot::~Robot(){
 void moss::Robot::update(){
     chooseHeightIndex();
     this->sprite->linearAnimationHeight(this->posi, this->heightIndex, WHITE);
-    DrawCircleV(this->posi, 3.0f, RED);
     if (abs(this->posi.x - this->path[this->vertexIndex].x) >= 2.5f && 
             abs(this->posi.y - this->path[this->vertexIndex].y) >= 2.5f){
         this->posi.x += this->hsp * this->speed;
