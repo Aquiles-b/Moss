@@ -200,3 +200,6 @@ const bool& moss::Map::getChanged() const{
 void moss::Map::setChanged(const bool& changed){
     this->changed = changed;
 }
+const std::vector<ComponentModel*> moss::Map::getComponents() const{
+    return this->components;
+}

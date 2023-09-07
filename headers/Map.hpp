@@ -18,6 +18,7 @@ class Map{
                 const float& widthCellTop, const float& widthCellIso);
         virtual ~Map();
 
+        const std::vector<ComponentModel*> getComponents() const;
         const bool& getEditMode() const;
         const int& getSize() const;
         struct cellMatrix **getMapData();
