@@ -2,7 +2,7 @@
 
 moss::Camera::Camera(const float& width, const float& height, const short& speed,
         const Vector2& target)
-    : speed{speed}, mouse{GetMousePosition()}, scrool{0}{
+    : speed{speed}, mouse{GetMousePosition()}, scroll{0}{
     this->cam.offset = (Vector2){width / 2.0f, height / 2.0f};
     this->cam.target = target;
     this->cam.rotation = 0.0f;
@@ -31,11 +31,11 @@ void moss::Camera::update(){
 
     this->mouse = GetMousePosition();
     this->mouseWorld = GetScreenToWorld2D(this->mouse, this->cam);
-    this->scrool = GetMouseWheelMove();
-    if (this->scrool > 0){
+    this->scroll = GetMouseWheelMove();
+    if (this->scroll > 0){
         if (this->cam.zoom <= 1.5f)
             this->cam.zoom += 0.05f;
-    } else if (scrool < 0){
+    } else if (scroll < 0){
         if (this->cam.zoom >= 0.4f)
             this->cam.zoom -= 0.05f;
     }

@@ -22,7 +22,7 @@ class Camera{
         short speed;
         Vector2 mouse;
         Vector2 mouseWorld;
-        short scrool;
+        short scroll;
 
         void camColision();
 };
