@@ -27,6 +27,7 @@ class Construction{
         void setLDoor(const int& lDoor);
 
         void increaseOneRobot();
+        void decreaseOneRobot();
         struct paths getRandomPath() const;
         void clearPaths();
     private:

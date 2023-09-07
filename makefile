@@ -13,7 +13,7 @@ else
 	#Estatica Linux
 	S_FLAGS = -Wall -Llib -lraylib -lm -lpthread -ldl -lrt -lX11 
 endif
-FLAGS = -Wall -O3
+FLAGS = -Wall -O3 -lm
 
 $(nomePrograma): $(OBJS) 
 	g++ -o $(nomePrograma) $(OBJS) $(S_FLAGS)

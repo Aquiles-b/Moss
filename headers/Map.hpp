@@ -5,7 +5,7 @@
 #include <vector>
 #include "../headers/IdTextureMap.hpp"
 #include "../include/raylib.h"
-#include "../include/raymath.h"
+#include <math.h>
 #include "ComponentModel.hpp"
 #include "GameController.hpp"
 #include "cellMatrix.hpp"

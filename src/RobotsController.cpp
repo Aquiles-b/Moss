@@ -6,6 +6,9 @@ moss::RobotsController::RobotsController(const std::string& spr, const int& maxR
 }
 
 moss::RobotsController::~RobotsController(){
+    std::vector<moss::Robot*>::iterator itRobots = this->robots->begin();
+    for ( ; itRobots != this->robots->end(); ++itRobots)
+        delete *itRobots;
     delete this->robots;
     UnloadTexture(*this->spr);
     delete this->spr;
@@ -20,7 +23,7 @@ void moss::RobotsController::generateRobots(std::vector<struct cellMatrix> *cons
             while (GetRandomValue(1, 1000) > 970 && it->constInfo->getRobots() != 0){
                 this->robots->push_back(new moss::Robot{this->spr, 3, 5, {-40.0f, -50.0f}, 69, p.coords[0], GetRandomValue(3, 7)*0.5f,
                       p.coords, p.tam});
-                it->constInfo->setRobots(it->constInfo->getRobots() - 1);
+                it->constInfo->decreaseOneRobot();
             }
         }
     }
@@ -38,12 +41,14 @@ void moss::RobotsController::updateRobots(std::vector<struct cellMatrix> *constr
         posi = (*itRobots)->getPosi();
         gc.mapToMatrixCoord(posi.x, posi.y, l, c);
         if (mapData[l][c].value == -1){
+            delete *itRobots;
             itRobots = this->robots->erase(itRobots);
         } else if((*itRobots)->getReached()){
             auxOrigin = mapData[l][c].cOrigin;
             l = mapData[l][c].lOrigin;
             c = auxOrigin;
             mapData[l][c].constInfo->increaseOneRobot();
+            delete *itRobots;
             itRobots = this->robots->erase(itRobots);
         } else{
             itRobots++;

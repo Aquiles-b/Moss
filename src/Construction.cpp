@@ -5,12 +5,14 @@ using namespace moss;
 moss::Construction::Construction(const int& lDoor, const int& cDoor)
     :robots{3}, isConnected{false}, paths{new struct paths[4]}, maxPaths{4}, numPaths{0}, color{GRAY},
     cDoor{cDoor}, lDoor{lDoor}{
-    for (int i = 0; i < this->maxPaths; ++i)
+    for (int i = 0; i < this->maxPaths; ++i){
         this->paths[i].coords = new Vector2[128];
+        this->paths[i].tam = 0;
+    }
 }
 
 moss::Construction::~Construction(){
-    for (int i = 0; i < this->numPaths; ++i)
+    for (int i = 0; i < this->maxPaths; ++i)
         delete[] paths[i].coords;
     delete[] paths;
 }
@@ -51,6 +53,10 @@ void moss::Construction::setPaths(struct paths *paths, const int& numPaths){
 
 void moss::Construction::increaseOneRobot(){
     ++this->robots;
+}
+
+void moss::Construction::decreaseOneRobot(){
+    --this->robots;
 }
 
 void moss::Construction::clearPaths(){

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "../include/raylib.h"
-#include "../include/raymath.h"
+#include <math.h>
 #include "Construction.hpp"
 #include "cellMatrix.hpp"
 namespace moss{
@@ -12,9 +12,6 @@ class GameController{
     public:
         GameController(const int64_t& floorId, const int& heightCellIso, const int& size);
         virtual ~GameController();
-
-        const bool& getIsChanged() const;
-        void setIsChanged(const bool& isChanged);
 
         void updatePaths(struct cellMatrix **mtx, std::vector<struct cellMatrix> *construCoords);
         void mapToMatrixCoord(const float& x, const float& y, int& l, int& c) const;
@@ -25,8 +22,7 @@ class GameController{
         struct paths *paths;
         short **footPrint;
         int size;
-        int numPaths;
-        bool isChanged;
+        int maxPaths;
 
         void findPath(const int& l, const int& c, struct cellMatrix **mtx,
                         int& pathIndex, int& numCoord, short direction);

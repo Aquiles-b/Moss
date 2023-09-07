@@ -13,16 +13,6 @@ Animation::Animation(const std::string& spr, const int& frames, const int& speed
     this->frameHeight = 0;
 }
 
-Animation::Animation(Texture2D *spr, const int& frames, const int& speed,
-          const Vector2& offset, const int& frameHeight)
-    : img{spr}, maxFrames{frames}, frameIndex{0}, delay{0}, speed{speed}, direction{1}, imgShared{true}{
-    this->frameWidth = this->img->width / frames;
-    this->frameRec = {0.0f, 0.0f, static_cast<float>(this->frameWidth), static_cast<float>(this->img->height)};
-    this->offset = offset;
-    this->frameHeight = frameHeight;
-    this->frameRec.height = frameHeight;
-}
-
 Animation::Animation(const std::string& spr, const int& frames, const int& speed,
                     const Vector2& offset)
     :Animation{spr, frames, speed}{
@@ -34,6 +24,16 @@ Animation::Animation(const std::string& spr, const int& frames, const int& speed
     :Animation{spr, frames, speed, offset}{
         this->frameHeight = frameHeight;
         this->frameRec.height = frameHeight;
+}
+
+Animation::Animation(Texture2D *spr, const int& frames, const int& speed,
+          const Vector2& offset, const int& frameHeight)
+    : img{spr}, maxFrames{frames}, frameIndex{0}, delay{0}, speed{speed}, direction{1}, imgShared{true}{
+    this->frameWidth = this->img->width / frames;
+    this->frameRec = {0.0f, 0.0f, static_cast<float>(this->frameWidth), static_cast<float>(this->img->height)};
+    this->offset = offset;
+    this->frameHeight = frameHeight;
+    this->frameRec.height = frameHeight;
 }
 
 Animation::~Animation(){

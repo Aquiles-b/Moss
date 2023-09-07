@@ -7,6 +7,7 @@ moss::Hud::Hud(const std::string& editModeComps, const std::string& hammer)
 
 moss::Hud::~Hud(){
     UnloadTexture(this->editModeComps);
+    UnloadTexture(this->hammer);
 }
 
 void moss::Hud::draw(const Vector2& mouse) const{

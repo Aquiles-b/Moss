@@ -27,8 +27,9 @@ moss::Map::Map(const std::array<std::string, 4>& textures, const std::vector<Com
 }
 
 moss::Map::~Map(){
-    for (int i = 0; i < this->textures.size(); ++i)
-        UnloadTexture(this->textures[i]);
+    std::array<Texture2D, 4>::iterator itTextures = this->textures.begin();
+    for ( ; itTextures != this->textures.end(); ++itTextures)
+        UnloadTexture(*itTextures);
     for (int i = 0; i < this->size; ++i){
         for (int j = 0; j < this->size; ++j){
             if (this->mapData[i][j].constInfo != nullptr)
@@ -38,6 +39,9 @@ moss::Map::~Map(){
     }
     delete[] this->mapData;
     delete this->construCoords;
+    std::vector<ComponentModel*>::iterator itCM = this->components.begin();
+    for ( ; itCM != this->components.end(); ++itCM)
+        delete *itCM;
 }
  
 void moss::Map::imprimeMapData() const{

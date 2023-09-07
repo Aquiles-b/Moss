@@ -12,6 +12,7 @@ moss::Robot::Robot(Texture2D *spr, const int& frames, const int& speedAnimation,
 }
 
 moss::Robot::~Robot(){
+    delete this->sprite;
     delete[] this->path;
 }
 

@@ -1,9 +1,9 @@
 #include "../headers/GameController.hpp"
 
 moss::GameController::GameController(const int64_t& floorId, const int& heightCellIso, const int& size): floorId{floorId},
-    numPaths{4}, paths{new struct paths[4]}, heightCellIso{heightCellIso}, footPrint{new short*[size]},
+    maxPaths{4}, paths{new struct paths[4]}, heightCellIso{heightCellIso}, footPrint{new short*[size]},
     size{size}{
-    for (int i = 0; i < this->numPaths; ++i){
+    for (int i = 0; i < this->maxPaths; ++i){
         this->paths[i].coords = new Vector2[128];
         this->paths[i].tam = 0;
     }
@@ -15,7 +15,7 @@ moss::GameController::GameController(const int64_t& floorId, const int& heightCe
 }
 
 moss::GameController::~GameController(){
-    for (int i = 0; i < this->numPaths; ++i)
+    for (int i = 0; i < this->maxPaths; ++i)
         delete[] this->paths[i].coords;
     delete[] this->paths;
     for (int i = 0; i < size; ++i)
@@ -56,7 +56,7 @@ void moss::GameController::findPath(const int& l, const int& c, struct cellMatri
             addCoordPath(l, c, pathIndex, numCoord);
             this->paths[pathIndex].tam = numCoord;
             ++pathIndex;
-            if (pathIndex < this->numPaths){
+            if (pathIndex < this->maxPaths){
                 for (int i = 0; i < numCoord; ++i){
                     this->paths[pathIndex].coords[i].x = this->paths[pathIndex-1].coords[i].x;
                     this->paths[pathIndex].coords[i].y = this->paths[pathIndex-1].coords[i].y;
@@ -136,14 +136,6 @@ bool moss::GameController::isAllowedWalk(const int& l, const int& c, struct cell
 }
 
 void moss::GameController::clearPaths(){
-    for (int i = 0; i < this->numPaths; ++i)
+    for (int i = 0; i < this->maxPaths; ++i)
         this->paths[i].tam = 0;
-}
-
-const bool& moss::GameController::getIsChanged() const{
-    return this->isChanged;
-}
-
-void moss::GameController::setIsChanged(const bool& isChanged){
-    this->isChanged = isChanged;
 }
