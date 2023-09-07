@@ -29,8 +29,10 @@ ComponentModel::ComponentModel(const std::string& imgBf, const std::string& imgA
 }
 
 ComponentModel::~ComponentModel(){
-    delete this->spriteAf;
-    delete this->spriteBf;
+    if (this->spriteAf != nullptr)
+        delete this->spriteAf;
+    if (this->spriteBf != nullptr)
+        delete this->spriteBf;
 }
 
 void ComponentModel::updateAfter(Vector2& coord, const Color& c){

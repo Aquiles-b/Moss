@@ -1,6 +1,6 @@
 #include "../headers/moss.hpp"
 
-std::unique_ptr<moss::Map> initMap(){
+moss::Map *initMap(){
     std::array<std::string, 4> texturesMap;
     texturesMap[static_cast<int>(IdTextureMap::MAPTOP)] = "img/mapTop.png";
     texturesMap[static_cast<int>(IdTextureMap::GRIDTOP)] = "img/gridTop.png";
@@ -13,7 +13,7 @@ std::unique_ptr<moss::Map> initMap(){
     components.push_back(bus);
     components.push_back(ram);
     components.push_back(cpu);
-    std::unique_ptr<moss::Map> mapa{new moss::Map{texturesMap, components, 83.3f, 118.0f}};
+    moss::Map *mapa{new moss::Map{texturesMap, components, 83.3f, 118.0f}};
 
     return mapa;
 }

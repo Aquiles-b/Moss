@@ -3,6 +3,6 @@
 #include "Map.hpp"
 #include <memory>
 
-std::unique_ptr<moss::Map> initMap();
+moss::Map *initMap();
 
 #endif 

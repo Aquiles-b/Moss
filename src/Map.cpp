@@ -4,7 +4,7 @@ using namespace moss;
 
 moss::Map::Map(const std::array<std::string, 4>& textures, const std::vector<ComponentModel*>& components,
                 const float& widthCellTop, const float& widthCellIso)
-    :construCoords{new std::vector<struct cellMatrix>}{
+    :construCoords{new std::vector<struct cellMatrix>}, changed{false}{
     for (short i = 0; i < textures.size(); ++i)
         this->textures[i] = LoadTexture(textures[i].c_str());
     this->components = components;
