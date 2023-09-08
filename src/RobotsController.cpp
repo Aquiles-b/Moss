@@ -14,6 +14,16 @@ moss::RobotsController::~RobotsController(){
     delete this->spr;
 }
 
+moss::Robot *moss::RobotsController::createRobot(struct paths& p){
+    moss::Robot *aux{nullptr};
+    if (GetRandomValue(0, 100) < 91)
+        aux = new moss::SimpleRobot{this->spr, 3, 5, {-40.0f, -50.0f}, 69, p.coords[0], GetRandomValue(3, 7)*0.5f, p.coords, p.tam};
+    else
+        aux = new moss::VirusRobot{this->spr, 3, 5, {-40.0f, -50.0f}, 69, p.coords[0], GetRandomValue(3, 7)*0.5f, p.coords, p.tam};
+
+    return aux;
+}
+
 void moss::RobotsController::generateRobots(std::vector<struct cellMatrix> *constructions){
     struct paths p;
     std::vector<struct cellMatrix>::iterator it = constructions->begin();
@@ -21,8 +31,7 @@ void moss::RobotsController::generateRobots(std::vector<struct cellMatrix> *cons
         if(it->constInfo->getIsConnected()){
             p = it->constInfo->getRandomPath();
             while (GetRandomValue(1, 1000) > 970 && it->constInfo->getRobots() != 0){
-                this->robots->push_back(new moss::Robot{this->spr, 3, 5, {-40.0f, -50.0f}, 69, p.coords[0], GetRandomValue(3, 7)*0.5f,
-                      p.coords, p.tam});
+                this->robots->push_back(createRobot(p));
                 it->constInfo->decreaseOneRobot();
             }
         }

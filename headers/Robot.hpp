@@ -12,6 +12,8 @@ class Robot{
 
         const bool& getReached() const;
         Vector2& getPosi();
+        const Color& getColor() const;
+        void setColor(const Color& color);
 
         void update();
     private:
@@ -25,6 +27,7 @@ class Robot{
         int hsp;
         int vsp;
         bool reached;
+        Color color;
 
         void chooseHeightIndex();
 };

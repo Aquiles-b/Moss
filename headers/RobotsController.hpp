@@ -2,6 +2,8 @@
 #define ROBOTS_CONTROLLER_HPP
 #include "GameController.hpp"
 #include "Robot.hpp"
+#include "SimpleRobot.hpp"
+#include "VirusRobot.hpp"
 #include "../include/raylib.h"
 #include "Construction.hpp"
 #include "cellMatrix.hpp"
@@ -20,6 +22,7 @@ class RobotsController{
         int maxRobots;
 
         void generateRobots(std::vector<struct cellMatrix> *constructions);
+        Robot *createRobot(struct paths& p);
 };
 }
 #endif
