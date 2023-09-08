@@ -6,10 +6,10 @@ namespace moss{
 class ComponentModel{
     public:
         ComponentModel();
-        ComponentModel(const std::string& imgAf, const std::string& imgBf, const int& frames, const int& speed,
+        ComponentModel(const std::string& imgBf, const std::string& imgAf, const int& frames, const int& speed,
                   const int& width, const int& height, const Vector2& offset, const bool& isTile, const int& lDoor,
                   const int& cDoor);
-        ComponentModel(const std::string& img, const std::string& imgBf, const int& frames, const int& speed,
+        ComponentModel(const std::string& imgBf, const std::string& imgAf, const int& frames, const int& speed,
                   const int& width, const int& height, const bool& isTile);
         ComponentModel(const std::string& img, const int& frames, const int& speed, const int& width,
                 const int& height, const bool& isTile);
