@@ -2,7 +2,6 @@
 #define CAMERA_HPP
 #include "../include/raylib.h"
 #include <iostream>
-
 namespace moss{
 class Camera{
     public:
@@ -13,7 +12,7 @@ class Camera{
         const Camera2D& getCam() const;
         const Vector2& getMouse() const;
         const Vector2& getMouseWorld() const;
-        const short& getScrool() const;
+        const short& getScroll() const;
     
         void update();
         void showMouseInfo(const bool& inScreen) const;
@@ -27,5 +26,4 @@ class Camera{
         void camColision();
 };
 }
-
 #endif

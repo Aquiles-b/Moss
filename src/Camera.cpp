@@ -64,3 +64,7 @@ const Vector2& moss::Camera::getMouse() const{
 const Vector2& moss::Camera::getMouseWorld() const{
     return this->mouseWorld; 
 }
+
+const short& moss::Camera::getScroll() const{
+    return this->scroll;
+}
