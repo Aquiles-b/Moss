@@ -19,3 +19,5 @@ make -j4
 ```
 mingw32-make.exe sys=win -j4
 ```
+
+Apertando a tecla E você entra no modo de edição.
